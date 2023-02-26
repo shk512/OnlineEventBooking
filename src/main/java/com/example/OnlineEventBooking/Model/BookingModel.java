@@ -21,5 +21,5 @@ public class BookingModel {
     @Column private double balanceAmount;
     @Column private double concessionAmount;
     @Column private String menu;
-    @Column private String isBookingConfirm;
+    @Column private boolean isBookingConfirm;
 }
