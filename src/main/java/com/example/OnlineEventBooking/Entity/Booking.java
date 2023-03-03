@@ -6,9 +6,9 @@ import jakarta.persistence.*;
 @Table(name = "Booking")
 public class Booking {
 
-    @Id @Column(name = "bookingId") private String bookingId;
-    @ManyToOne @JoinColumn(name = "clientId") @Column private Client client;
-    @ManyToOne @JoinColumn (name = "venueId") @Column private Venue venue;
+    @Id @Column(name = "booking_id") private String bookingId;
+    @ManyToOne @JoinColumn(name = "client_id") private Client client;
+    @ManyToOne @JoinColumn (name = "venue_id") private Venue venue;
     @Column private String date;
     @Column private String time;
     @Column private String persons;

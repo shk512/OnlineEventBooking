@@ -8,8 +8,8 @@ import java.util.List;
 @Table(name = "Venue")
 public class Venue {
 
-    @Id @Column(name = "venueId") private Integer venueId;
-    @Id @Column private String contact;
+    @Id @Column(name = "venue_id") private Integer venueId;
+    @Column private String contact;
     @Column private String venueName;
     @Column private String city;
     @Column private String streetAddress;
@@ -17,5 +17,5 @@ public class Venue {
     @Column private String packageEndsDate;
     @Column private boolean isPackageActive;
 
-    @OneToMany @JoinColumn(name = "bookingId") List<Booking> bookings;
+    @OneToMany  @JoinColumn(name = "booking_id") List<Booking> bookings;
 }

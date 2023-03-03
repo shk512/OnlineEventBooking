@@ -7,8 +7,8 @@ import java.util.List;
 @Entity
 @Table(name="Client")
 public class Client {
-    @Id @Column(name = "clientId") private Integer clientId;
-    @Id @Column private String contact;
+    @Id @Column(name = "client_id") private Integer clientId;
+    @Column private String contact;
     @Column private String name;
-    @OneToMany @JoinColumn(name = "bookingId") List<Booking> bookings;
+    @OneToMany @JoinColumn(name = "booking_id") List<Booking> bookings;
 }
