@@ -1,18 +1,14 @@
-package com.example.OnlineEventBooking.Model;
+package com.example.OnlineEventBooking.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Booking")
-public class BookingModel {
+public class Booking {
 
-    @Id @Column private String bookingId;
-    @Column private String clientId;
-    @Column private String venueId;
+    @Id @Column(name = "bookingId") private String bookingId;
+    @ManyToOne @JoinColumn(name = "clientId") @Column private Client client;
+    @ManyToOne @JoinColumn (name = "venueId") @Column private Venue venue;
     @Column private String date;
     @Column private String time;
     @Column private String persons;
@@ -21,5 +17,6 @@ public class BookingModel {
     @Column private double balanceAmount;
     @Column private double concessionAmount;
     @Column private String menu;
+    @Column private  String extraddetails;
     @Column private boolean isBookingConfirm;
 }
