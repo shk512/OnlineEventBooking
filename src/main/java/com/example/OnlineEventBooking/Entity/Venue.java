@@ -8,7 +8,7 @@ import java.util.List;
 @Table(name = "Venue")
 public class Venue {
 
-    @Id @Column(name = "venue_id") private Integer venueId;
+    @Id @Column(name = "venue_id") private int venueId;
     @Column private String contact;
     @Column private String venueName;
     @Column private String city;
