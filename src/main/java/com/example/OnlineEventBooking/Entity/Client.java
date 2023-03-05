@@ -8,7 +8,7 @@ import java.util.List;
 @Table(name="Client")
 public class Client {
     @Id @Column(name = "client_id") private int clientId;
-    @OneToMany @JoinColumn(name = "booking_id") List<Booking> bookings;
+    @OneToMany List<Booking> bookings;
     @Embedded
     PersonInfo personInfo;
 }
