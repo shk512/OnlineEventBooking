@@ -1,5 +1,4 @@
 package com.example.OnlineEventBooking.Entity;
-
 import jakarta.persistence.*;
 import lombok.Data;
 
