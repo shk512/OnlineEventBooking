@@ -1,12 +1,14 @@
 package com.example.OnlineEventBooking.Entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "Booking")
 public class Booking {
 
-    @Id @Column(name = "booking_id") private int bookingId;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "booking_id") private int bookingId;
     @ManyToOne @JoinColumn(name = "client_id") private Client clientId;
     @ManyToOne @JoinColumn (name = "venue_id") private Venue venueId;
     @Column(name = "date") private String date;
