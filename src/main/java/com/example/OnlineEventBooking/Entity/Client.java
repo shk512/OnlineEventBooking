@@ -1,9 +1,11 @@
 package com.example.OnlineEventBooking.Entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 @Entity
 @Table(name="Client")
 public class Client {

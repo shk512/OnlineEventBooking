@@ -3,7 +3,9 @@ package com.example.OnlineEventBooking.Entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
+import lombok.Data;
 
+@Data
 @Embeddable
 public class PersonInfo {
     @Column(name = "name") private String name;
