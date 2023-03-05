@@ -7,9 +7,13 @@ import lombok.Data;
 @Table(name = "Booking")
 public class Booking {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "booking_id") private int bookingId;
-    @ManyToOne @JoinColumn(name = "client_id") private Client clientId;
-    @ManyToOne @JoinColumn (name = "venue_id") private Venue venueId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "booking_id") private int bookingId;
+    @ManyToOne
+    @JoinColumn(name = "client_id") private Client clientId;
+    @ManyToOne
+    @JoinColumn (name = "venue_id") private Venue venueId;
     @Column(name = "date") private String date;
     @Column(name = "time") private String time;
     @Column(name = "persons") private String persons;
@@ -19,5 +23,6 @@ public class Booking {
     @Column(name = "concession_amount") private double concessionAmount;
     @Column(name = "menu") private String menu;
     @Column(name = "extra_details") private  String extraDetails;
-    @Column(name = "is_booking_confirm") private boolean isBookingConfirm;
+    @Column(name = "is_booking_confirm")
+    private boolean isBookingConfirm;
 }

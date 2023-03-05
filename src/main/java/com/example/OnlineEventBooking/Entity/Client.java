@@ -9,8 +9,10 @@ import java.util.List;
 @Entity
 @Table(name="Client")
 public class Client {
-    @Id @Column(name = "client_id") private int clientId;
+    @Id
+    @Column(name = "client_id") private int clientId;
+
     @OneToMany List<Booking> bookings;
     @Embedded
-    PersonInfo personInfo;
+    private PersonInfo personInfo;
 }
