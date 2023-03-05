@@ -9,6 +9,6 @@ import java.util.List;
 public class Client {
     @Id @Column(name = "client_id") private int clientId;
     @OneToMany @JoinColumn(name = "booking_id") List<Booking> bookings;
-    @EmbeddedId
+    @Embedded
     PersonInfo personInfo;
 }

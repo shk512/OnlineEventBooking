@@ -10,7 +10,7 @@ public class Venue {
 
     @Id @Column(name = "venue_id") private int venueId;
     @OneToMany  @JoinColumn(name = "booking_id") List<Booking> bookings;
-   @EmbeddedId
+   @Embedded
    PersonInfo personInfo;
     @Column(name = "package_start_date") private String packageStartDate;
     @Column(name = "package_ends_date") private String packageEndsDate;
