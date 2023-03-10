@@ -10,9 +10,12 @@ import java.util.List;
 @Table(name="Client")
 public class Client {
     @Id
-    @Column(name = "client_id") private int clientId;
+    @Column(name = "client_id")
+    private int clientId;
 
-    @OneToMany List<Booking> bookings;
+    @OneToMany
+    @JoinColumn(name="booking_id")
+    List<Booking> bookings;
     @Embedded
     private PersonInfo personInfo;
 }

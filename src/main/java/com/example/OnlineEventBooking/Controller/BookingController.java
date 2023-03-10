@@ -12,5 +12,31 @@ import java.util.List;
 public class BookingController {
 
     @Autowired
-    BookingService bookingService;
+    private BookingService bookingService;
+
+    @PostMapping
+    private String saveBooking(@RequestBody Booking booking){
+        return bookingService.saveOrUpdateBooking(booking);
+    }
+
+    @PutMapping("/update")
+    private String updateBooking(@RequestBody Booking booking){
+        return bookingService.saveOrUpdateBooking(booking);
+    }
+
+    @DeleteMapping("delete/{id}")
+    private String deleteBooking(@RequestParam("id") int id){
+        return bookingService.deleteBooking(id);
+    }
+
+    @GetMapping("/getBookings")
+    private List<Booking> getAllBookings(){
+        return bookingService.getAllBookings();
+    }
+
+    @GetMapping("/getBooking/{id}")
+    private Booking getBookingById(@RequestParam("id") int id){
+        return bookingService.getBookingById(id);
+    }
+
 }

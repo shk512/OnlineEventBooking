@@ -13,4 +13,9 @@ public class ClientController {
     @Autowired
     ClientService clientService;
 
+    @PostMapping("/save")
+    private int saveClient(@RequestBody Client client){
+        return clientService.saveClient(client);
+    }
+
 }
