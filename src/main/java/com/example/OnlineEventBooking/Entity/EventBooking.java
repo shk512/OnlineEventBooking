@@ -4,17 +4,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Booking")
-public class Booking {
+public class EventBooking {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "booking_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int bookingId;
+
+    @OneToMany
+    private List<PaymentMode> paymentModeList;
+
+    @OneToOne
+    @JoinColumn(name = "event_execution_id")
+    EventExecution eventExecution;
+
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client clientId;
@@ -26,19 +36,19 @@ public class Booking {
     @Column(name = "time")
     private String time;
     @Column(name = "persons")
-    private String persons;
+    private int persons;
     @Column(name = "total_amount")
     private double totalAmount;
     @Column(name = "advance_amount")
     private double advanceAmount;
     @Column(name = "balance_amount")
     private double balanceAmount;
-    @Column(name = "concession_amount")
-    private double concessionAmount;
     @Column(name = "menu")
     private String menu;
     @Column(name = "extra_details")
     private String extraDetails;
+    @Column(name = "payment_mode")
+    private String paymentMode;
     @Column(name = "is_booking_confirm")
     private boolean isBookingConfirm;
 }

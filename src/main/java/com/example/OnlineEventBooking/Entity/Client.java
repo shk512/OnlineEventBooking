@@ -1,21 +1,24 @@
 package com.example.OnlineEventBooking.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="Client")
 public class Client {
     @Id
     @Column(name = "client_id")
-    private int clientId;
+    private String clientId;
 
     @OneToMany
-    @JoinColumn(name="booking_id")
-    List<Booking> bookings;
+    List<EventBooking> bookings;
     @Embedded
     private PersonInfo personInfo;
 }
