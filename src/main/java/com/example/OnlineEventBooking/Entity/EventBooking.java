@@ -16,13 +16,12 @@ public class EventBooking {
     @Id
     @Column(name = "booking_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int bookingId;
+    private long bookingId;
 
     @OneToMany
     private List<PaymentMode> paymentModeList;
 
     @OneToOne
-    @JoinColumn(name = "event_execution_id")
     EventExecution eventExecution;
 
     @ManyToOne
