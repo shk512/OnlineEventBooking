@@ -18,18 +18,15 @@ public class EventBooking {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long bookingId;
 
-    @OneToMany
-    private List<PaymentMode> paymentModeList;
-
-    @OneToOne
-    EventExecution eventExecution;
+    @OneToMany(mappedBy = "eventBooking")
+    private List<Payment> paymentModeList;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private Client clientId;
+    private Client client;
     @ManyToOne
     @JoinColumn (name = "venue_id")
-    private Venue venueId;
+    private Venue venue;
     @Column(name = "date")
     private String date;
     @Column(name = "time")

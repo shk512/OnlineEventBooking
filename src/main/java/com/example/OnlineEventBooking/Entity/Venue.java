@@ -17,10 +17,12 @@ public class Venue {
     @Id
     @Column(name = "venue_id")
     private String venueId;
-    @OneToMany
+    @OneToMany(mappedBy = "venue")
     List<EventBooking> bookings;
     @Embedded
     private PersonInfo personInfo;
+    @Column(name = "password")
+    private String password;
     @Column(name = "package_start_date")
     private String packageStartDate;
     @Column(name = "package_ends_date")

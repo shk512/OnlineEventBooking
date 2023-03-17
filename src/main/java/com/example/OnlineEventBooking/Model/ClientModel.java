@@ -1,15 +1,29 @@
 package com.example.OnlineEventBooking.Model;
-
-import com.example.OnlineEventBooking.Entity.EventBooking;
+import com.example.OnlineEventBooking.Entity.Client;
 import com.example.OnlineEventBooking.Entity.PersonInfo;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import lombok.Data;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
-
+@Component
+@Data
 public class ClientModel {
     private String clientId;
-    private PersonInfo personInfo;
+    private PersonInfoModel personInfoModel;
+
+    public Client dissamble(){
+        Client client=new Client();
+
+        client.setClientId(clientId);
+        client.setPersonInfo(personInfoModel.dissamble());
+
+        return client;
+    }
+    public ClientModel assemble(Client client){
+        ClientModel clientModel=new ClientModel();
+
+        clientModel.setClientId(client.getClientId());
+        clientModel.setPersonInfoModel(personInfoModel.assemble(client.getPersonInfo()));
+
+        return clientModel;
+    }
 }

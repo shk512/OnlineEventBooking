@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "payment")
-public class PaymentMode {
+public class Payment {
 
     @Id
     @Column(name = "transaction_id")

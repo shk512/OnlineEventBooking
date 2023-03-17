@@ -1,5 +1,6 @@
 package com.example.OnlineEventBooking.Controller;
 import com.example.OnlineEventBooking.Entity.Venue;
+import com.example.OnlineEventBooking.Model.VenueModel;
 import com.example.OnlineEventBooking.Service.VenueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +13,8 @@ public class VenueController {
     VenueService venueService;
 
     @PostMapping("/save")
-    private String saveVenue(@RequestBody Venue venue){
-        return venueService.saveVenue(venue);
+    private VenueModel saveVenue(@RequestBody VenueModel venueModel){
+        return venueService.saveVenue(venueModel);
     }
 
-    @PutMapping("/update")
-    private String updateVenue(@RequestBody Venue venue){
-        return venueService.saveVenue(venue);
-    }
 }

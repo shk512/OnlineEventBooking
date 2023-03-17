@@ -1,5 +1,6 @@
 package com.example.OnlineEventBooking.Controller;
 import com.example.OnlineEventBooking.Entity.Client;
+import com.example.OnlineEventBooking.Model.ClientModel;
 import com.example.OnlineEventBooking.Service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +12,8 @@ public class ClientController {
     ClientService clientService;
 
     @PostMapping("/save")
-    private String saveClient(@RequestBody Client client){
-        return clientService.saveClient(client);
+    private ClientModel saveClient(@RequestBody ClientModel clientModel){
+        return clientService.saveClient(clientModel);
     }
 
     @DeleteMapping("/delete/{id}")

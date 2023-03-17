@@ -1,6 +1,7 @@
 package com.example.OnlineEventBooking.Service;
 
 import com.example.OnlineEventBooking.Entity.EventBooking;
+import com.example.OnlineEventBooking.Model.EventBookingModel;
 import com.example.OnlineEventBooking.Repository.EventBookingRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,26 +17,8 @@ public class EventBookingService {
     private EventBookingRepository bookingRepository;
 
     @Transactional
-    public String saveOrUpdateBooking(EventBooking booking){
-        bookingRepository.save(booking);
-        return "Success";
+    public EventBookingModel saveOrUpdateBooking(EventBookingModel bookingModel){
+        return bookingModel.assemble(bookingRepository.save(bookingModel.dissamble()));
     }
-  /*@Transactional
-    public String deleteBooking(int id){
-        bookingRepository.deleteById(id);
-        return "Deleted";
-    }*/
-
-    @Transactional
-    public List<EventBooking> getAllBookings(){
-        List<EventBooking> bookingList=new ArrayList<EventBooking>();
-        bookingRepository.findAll().forEach(booking->bookingList.add(booking));
-        return bookingList;
-    }
-
-    /*@Transactional
-    public Booking getBookingById(int id){
-        return bookingRepository.findById(id).get();
-    }*/
 
 }

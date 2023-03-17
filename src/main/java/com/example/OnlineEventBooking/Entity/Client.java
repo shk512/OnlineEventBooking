@@ -17,7 +17,7 @@ public class Client {
     @Column(name = "client_id")
     private String clientId;
 
-    @OneToMany
+    @OneToMany(mappedBy = "client")
     List<EventBooking> bookings;
     @Embedded
     private PersonInfo personInfo;

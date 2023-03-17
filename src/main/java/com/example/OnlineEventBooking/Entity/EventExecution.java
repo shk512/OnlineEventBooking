@@ -12,6 +12,7 @@ public class EventExecution {
     private int eventExecutionId;
 
     @OneToOne
+    @JoinColumn(name = "booking_id")
     EventBooking eventBooking;
 
     @Column(name = "attendee")

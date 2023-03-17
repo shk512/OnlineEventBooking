@@ -1,6 +1,6 @@
 package com.example.OnlineEventBooking.Service;
 
-import com.example.OnlineEventBooking.Entity.Client;
+import com.example.OnlineEventBooking.Model.ClientModel;
 import com.example.OnlineEventBooking.Repository.ClientRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +13,8 @@ public class ClientService {
     private ClientRepository clientInterface;
 
     @Transactional
-    public String saveClient(Client client){
-        clientInterface.save(client);
-        return  "Success";
+    public ClientModel saveClient(ClientModel clientModel){
+        return  clientModel.assemble(clientInterface.save(clientModel.dissamble()));
     }
 
     @Transactional
