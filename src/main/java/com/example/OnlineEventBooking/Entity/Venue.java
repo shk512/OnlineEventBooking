@@ -11,12 +11,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Venue")
+@Table(name = "venue")
 public class Venue {
 
     @Id
-    @Column(name = "venue_id")
-    private String venueId;
+    @Column(name = "id")
+    private String id;
     @OneToMany(mappedBy = "venue")
     List<EventBooking> bookings;
     @Embedded
@@ -28,5 +28,5 @@ public class Venue {
     @Column(name = "package_ends_date")
     private String packageEndsDate;
     @Column(name="is_package_active")
-    private boolean isPackageActive;
+    private Boolean isPackageActive;
 }

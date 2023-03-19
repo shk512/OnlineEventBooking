@@ -31,7 +31,7 @@ public class PersonInfoModel {
         personInfoModel.setCity(personInfo.getCity());
         personInfoModel.setContact(personInfo.getContact());
         personInfoModel.setName(personInfo.getName());
-        personInfoModel.setStreetAddress(personInfoModel.getStreetAddress());
+        personInfoModel.setStreetAddress(personInfo.getStreetAddress());
 
         return  personInfoModel;
     }

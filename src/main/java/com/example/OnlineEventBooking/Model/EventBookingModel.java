@@ -19,15 +19,17 @@ public class EventBookingModel {
     private String menu;
     private String extraDetails;
     private String paymentMode;
-    private boolean isBookingConfirm;
+    private Boolean isBookingConfirm;
     private ClientModel clientId;
     private VenueModel venueId;
+
+    private EventExecutionModel eventExecutionModel;
 
     public EventBooking dissamble(){
         EventBooking eventBooking=new EventBooking();
 
         eventBooking.setDate(this.date);
-        eventBooking.setBookingConfirm(this.isBookingConfirm);
+        eventBooking.setIsBookingConfirm(this.isBookingConfirm);
         eventBooking.setMenu(this.menu);
         eventBooking.setPaymentMode(this.paymentMode);
         eventBooking.setAdvanceAmount(this.advanceAmount);
@@ -36,8 +38,8 @@ public class EventBookingModel {
         eventBooking.setPersons(this.persons);
         eventBooking.setTotalAmount(this.totalAmount);
         eventBooking.setExtraDetails(this.extraDetails);
-        eventBooking.setClient(this.clientId.dissamble());
-        eventBooking.setVenue(this.venueId.dissamble());
+        eventBooking.setClient(clientId.dissamble());
+        eventBooking.setVenue(venueId.dissamble());
 
         return eventBooking;
     }
@@ -57,11 +59,7 @@ public class EventBookingModel {
         eventBookingModel.setExtraDetails(eventBooking.getExtraDetails());
         eventBookingModel.setClientId(clientId.assemble(eventBooking.getClient()));
         eventBookingModel.setVenueId(venueId.assemble(eventBooking.getVenue()));
-        if(eventBooking.isBookingConfirm()){
-            eventBookingModel.setBookingConfirm(true);
-        }else{
-            eventBookingModel.setBookingConfirm(false);
-        }
+        eventBookingModel.setIsBookingConfirm(eventBooking.getIsBookingConfirm());
 
 
         return eventBookingModel;

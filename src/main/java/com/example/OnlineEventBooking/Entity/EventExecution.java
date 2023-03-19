@@ -3,17 +3,13 @@ package com.example.OnlineEventBooking.Entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "EventExecution")
+@Table(name = "event_execution")
 public class EventExecution {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "event_execution_id")
-    private int eventExecutionId;
-
-    @OneToOne
-    @JoinColumn(name = "booking_id")
-    EventBooking eventBooking;
+    private Long eventExecutionId;
 
     @Column(name = "attendee")
     private int attendee;

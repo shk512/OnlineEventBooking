@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class EventExecutionModel {
-    private int eventExecutionId;
-
-    EventBooking eventBooking;
+    private int id;
 
     private int attendee;
 

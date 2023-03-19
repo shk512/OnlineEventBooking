@@ -10,7 +10,7 @@ public class Payment {
     @Id
     @Column(name = "transaction_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long transactionId;
+    private Long transactionId;
 
     @ManyToOne
     @JoinColumn(name = "booking_id")

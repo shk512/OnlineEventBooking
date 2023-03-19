@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="Client")
+@Table(name="client")
 public class Client {
     @Id
     @Column(name = "client_id")

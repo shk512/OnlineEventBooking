@@ -10,13 +10,17 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Booking")
+@Table(name = "booking")
 public class EventBooking {
 
     @Id
     @Column(name = "booking_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long bookingId;
+    private Long bookingId;
+
+    @OneToOne
+    @JoinColumn(name = "booking_execution_id")
+    EventExecution eventExecution;
 
     @OneToMany(mappedBy = "eventBooking")
     private List<Payment> paymentModeList;
@@ -46,5 +50,5 @@ public class EventBooking {
     @Column(name = "payment_mode")
     private String paymentMode;
     @Column(name = "is_booking_confirm")
-    private boolean isBookingConfirm;
+    private Boolean isBookingConfirm;
 }

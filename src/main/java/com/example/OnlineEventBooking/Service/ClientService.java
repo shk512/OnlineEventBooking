@@ -10,16 +10,16 @@ import org.springframework.stereotype.Service;
 public class ClientService {
 
     @Autowired
-    private ClientRepository clientInterface;
+    private ClientRepository clientRepository;
 
     @Transactional
     public ClientModel saveClient(ClientModel clientModel){
-        return  clientModel.assemble(clientInterface.save(clientModel.dissamble()));
+        return  clientModel.assemble(clientRepository.save(clientModel.dissamble()));
     }
 
     @Transactional
     public String deleteClient(String clientId){
-        clientInterface.deleteById(clientId);
+        clientRepository.deleteById(clientId);
         return "Deleted";
     }
 

@@ -1,49 +1,43 @@
 package com.example.OnlineEventBooking.Model;
 
-import com.example.OnlineEventBooking.Entity.EventBooking;
-import com.example.OnlineEventBooking.Entity.PersonInfo;
 import com.example.OnlineEventBooking.Entity.Venue;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @Data
+@NoArgsConstructor
 public class VenueModel {
-    private String venueId;
+    private String id;
+    private String password;
     private PersonInfoModel personInfoModel;
     private String packageStartDate;
     private String packageEndsDate;
-    private boolean isPackageActive;
+    private Boolean isPackageActive;
 
     public Venue dissamble(){
         Venue venue=new Venue();
 
-        venue.setVenueId(venueId);
-        venue.setPackageActive(isPackageActive);
-        venue.setPackageStartDate(packageStartDate);
-        venue.setPackageEndsDate(packageEndsDate);
-        venue.setPersonInfo(personInfoModel.dissamble());
+        venue.setId(this.id);
+        venue.setPassword(this.password);
+        venue.setIsPackageActive(this.isPackageActive);
+        venue.setPackageStartDate(this.packageStartDate);
+        venue.setPackageEndsDate(this.packageEndsDate);
+        venue.setPersonInfo(this.personInfoModel.dissamble());
 
         return venue;
     }
     public VenueModel assemble(Venue venue){
         VenueModel venueModel=new VenueModel();
+        PersonInfoModel personInfoModel1=new PersonInfoModel();
 
         venueModel.setPackageEndsDate(venue.getPackageEndsDate());
+        venueModel.setPassword(venue.getPassword());
         venueModel.setPackageStartDate(venue.getPackageStartDate());
-        venueModel.setPersonInfoModel(personInfoModel.assemble(venue.getPersonInfo()));
-        venueModel.setVenueId(venue.getVenueId());
-        if(venue.isPackageActive()){
-            venueModel.setPackageActive(true);
-        }else{
-            venueModel.setPackageActive(false);
-        }
+        venueModel.setPersonInfoModel(personInfoModel1.assemble(venue.getPersonInfo()));
+        venueModel.setId(venue.getId());
+        venueModel.setIsPackageActive(venue.getIsPackageActive());
 
         return  venueModel;
     }

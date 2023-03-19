@@ -21,4 +21,19 @@ public class EventBookingService {
         return bookingModel.assemble(bookingRepository.save(bookingModel.dissamble()));
     }
 
+    @Transactional
+    public List<EventBookingModel> getBookingByClient(String date,String clientId){
+        List<EventBookingModel> eventBookingModelList=new ArrayList<>();
+        List<EventBooking> eventBookingList=new ArrayList<>();
+        if(date!=null){
+           // eventBookingList=bookingRepository.findByClientIdAndDate(clientId,date);
+        }else{
+            //eventBookingList=bookingRepository.findByClientId(clientId);
+        }
+        for (EventBooking eventBooking:eventBookingList) {
+            eventBookingModelList.add(new EventBookingModel().assemble(eventBooking));
+        }
+        return eventBookingModelList;
+    }
+
 }
