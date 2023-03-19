@@ -9,7 +9,7 @@ import java.util.List;
 @Component
 @Data
 public class EventBookingModel {
-    private long id;
+    private Long id;
     private String date;
     private String time;
     private int persons;

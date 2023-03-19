@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventBookingService {
@@ -24,15 +25,12 @@ public class EventBookingService {
     @Transactional
     public List<EventBookingModel> getBookingByClient(String date,String clientId){
         List<EventBookingModel> eventBookingModelList=new ArrayList<>();
-        List<EventBooking> eventBookingList=new ArrayList<>();
         if(date!=null){
-           // eventBookingList=bookingRepository.findByClientIdAndDate(clientId,date);
+           eventBookingModelList=bookingRepository.findAll().stream().map(EventBooking->new EventBookingModel()).filter(EventBookingModel->EventBookingModel.getId().equals(clientId)).collect(Collectors.toList());
         }else{
-            //eventBookingList=bookingRepository.findByClientId(clientId);
+           eventBookingModelList=bookingRepository.findAll().stream().map(EventBooking->new EventBookingModel()).collect(Collectors.toList());
         }
-        for (EventBooking eventBooking:eventBookingList) {
-            eventBookingModelList.add(new EventBookingModel().assemble(eventBooking));
-        }
+
         return eventBookingModelList;
     }
 
