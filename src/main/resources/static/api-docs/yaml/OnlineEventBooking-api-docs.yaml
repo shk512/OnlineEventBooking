@@ -1,0 +1,134 @@
+openapi: 3.0.0
+info:
+  title: Online Event Booking API
+  description: Rest API for Online Event Booking App
+  version: 1.0.0
+  contact:
+    email: mukarramshk512@gmail.com
+
+tags:
+  - name: EventBooking
+    description: Endpoints for Event Booking
+  - name: EventExecution
+    description: Endpoints for Event Execution
+
+paths:
+  /booking/client:
+    get:
+      tags:
+        - EventBooking
+      summary: Get list of bookings for respective client
+      operationId: clientBookings
+      parameters:
+        - in: query
+          name: clientBookings
+          description: Unique reference of client booking record
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful retrieval
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventBookingModel'
+  /booking/save:
+    post:
+      tags:
+        - EventBooking
+      summary: Endpoints to save booking
+      operationId: bookingSave
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventBookingModel'
+      responses:
+        '200':
+          description: Successful country record has been saved or updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventBookingModel'
+
+components:
+
+  schemas:
+    EventBookingModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+        persons:
+          type: integer
+          format: int32
+        totalAmount:
+          type: integer
+          format: int64
+        balanceAmount:
+          type: integer
+          format: int64
+        advanceAmount:
+          type: integer
+          format: int64
+        menu:
+          type: string
+        extraDetails:
+          type: string
+        paymentMode:
+          type: string
+        isBookingConfirm:
+          type: boolean
+        clientId:
+          type: object
+          $ref: '#/components/schemas/ClientModel'
+        venueId:
+          type: object
+          $ref: '#/components/schemas/VenueModel'
+
+    ClientModel:
+      type: object
+      properties:
+        id:
+          type: string
+        PersonInfoModel:
+          type: object
+          $ref: '#/components/schemas/PersonInfoModel'
+
+    VenueModel:
+      type: object
+      properties:
+        id:
+          type: string
+        password:
+          type: string
+        packageStartDate:
+          type: string
+          format: date
+        packageEndsDate:
+          type: string
+          format: date
+        isPackageActive:
+          type: boolean
+        PersonInfoModel:
+          type: object
+          $ref: '#/components/schemas/PersonInfoModel'
+
+    PersonInfoModel:
+      type: object
+      properties:
+        name:
+          type: string
+        contact:
+          type: string
+        city:
+          type: string
+        streetAddress:
+          type: string

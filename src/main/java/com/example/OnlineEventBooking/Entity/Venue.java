@@ -21,6 +21,8 @@ public class Venue {
     List<EventBooking> bookings;
     @Embedded
     private PersonInfo personInfo;
+    @Column(name = "per_head_rate")
+    private double perHeadRate;
     @Column(name = "password")
     private String password;
     @Column(name = "package_start_date")

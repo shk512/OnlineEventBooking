@@ -4,17 +4,18 @@ import com.example.OnlineEventBooking.Entity.*;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 @Component
 @Data
 public class EventBookingModel {
     private Long id;
-    private String date;
+    private Date date;
     private String time;
     private int persons;
-    private double totalAmount;
     private double advanceAmount;
+    private double totalAmount;
     private double balanceAmount;
     private String menu;
     private String extraDetails;
@@ -22,7 +23,6 @@ public class EventBookingModel {
     private Boolean isBookingConfirm;
     private ClientModel clientId;
     private VenueModel venueId;
-
     private EventExecutionModel eventExecutionModel;
 
     public EventBooking dissamble(){
@@ -33,10 +33,10 @@ public class EventBookingModel {
         eventBooking.setMenu(this.menu);
         eventBooking.setPaymentMode(this.paymentMode);
         eventBooking.setAdvanceAmount(this.advanceAmount);
-        eventBooking.setBalanceAmount(this.balanceAmount);
         eventBooking.setTime(this.time);
         eventBooking.setPersons(this.persons);
-        eventBooking.setTotalAmount(this.totalAmount);
+        eventBooking.setTotalAmount(venueId.getPerHeadRate()*this.persons);
+        eventBooking.setBalanceAmount(eventBooking.getTotalAmount()-this.advanceAmount);
         eventBooking.setExtraDetails(this.extraDetails);
         eventBooking.setClient(clientId.dissamble());
         eventBooking.setVenue(venueId.dissamble());
@@ -47,7 +47,7 @@ public class EventBookingModel {
     public EventBookingModel assemble(EventBooking eventBooking){
         EventBookingModel eventBookingModel=new EventBookingModel();
 
-        eventBookingModel.setId(eventBooking.getBookingId());
+        eventBookingModel.setId(eventBooking.getId());
         eventBookingModel.setDate(eventBooking.getDate());
         eventBookingModel.setTime(eventBooking.getTime());
         eventBookingModel.setPersons(eventBooking.getPersons());

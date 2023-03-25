@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -14,13 +15,9 @@ import java.util.List;
 public class EventBooking {
 
     @Id
-    @Column(name = "booking_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long bookingId;
-
-    @OneToOne
-    @JoinColumn(name = "booking_execution_id")
-    EventExecution eventExecution;
+    private Long id;
 
     @OneToMany(mappedBy = "eventBooking")
     private List<Payment> paymentModeList;
@@ -32,7 +29,7 @@ public class EventBooking {
     @JoinColumn (name = "venue_id")
     private Venue venue;
     @Column(name = "date")
-    private String date;
+    private Date date;
     @Column(name = "time")
     private String time;
     @Column(name = "persons")

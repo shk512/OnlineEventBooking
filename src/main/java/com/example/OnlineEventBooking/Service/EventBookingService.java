@@ -8,30 +8,48 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class EventBookingService {
 
-    @Autowired
-    private EventBookingRepository bookingRepository;
+  @Autowired
+    EventBookingRepository bookingRepository;
 
     @Transactional
-    public EventBookingModel saveOrUpdateBooking(EventBookingModel bookingModel){
-        return bookingModel.assemble(bookingRepository.save(bookingModel.dissamble()));
+    public String saveOrUpdateBooking(EventBookingModel bookingModel){
+        String result;
+        EventBooking eventBooking=bookingModel.dissamble();
+        if(searchBooking(eventBooking.getVenue().getId(),eventBooking.getDate())){
+            bookingRepository.save(eventBooking);
+            result="HURRAH! Congrats, Your booking has been reserved \n Your booking ID is:"+eventBooking.getId();
+        }else {
+            result="Oops! Sorry, Your requested date is already reserved.";
+        }
+        return  result;
+    }
+    @Transactional
+    private Boolean searchBooking(String venue, Date date){
+        boolean result;
+        if(bookingRepository.findEventBookingByVenue_IdAndDate(venue,date)!=null){
+            result=false;
+        }else{
+            result=true;
+        }
+        return  result;
     }
 
     @Transactional
-    public List<EventBookingModel> getBookingByClient(String date,String clientId){
-        List<EventBookingModel> eventBookingModelList=new ArrayList<>();
+    public List<EventBookingModel> getBookingByClientId(Date date,String clientId){
+        List<EventBookingModel> venueList;
         if(date!=null){
-           eventBookingModelList=bookingRepository.findAll().stream().map(EventBooking->new EventBookingModel()).filter(EventBookingModel->EventBookingModel.getId().equals(clientId)).collect(Collectors.toList());
+            venueList=bookingRepository.findEventBookingByClient_IdAndDate(clientId, date).stream().map(EventBooking->new EventBookingModel()).collect(Collectors.toList());
         }else{
-           eventBookingModelList=bookingRepository.findAll().stream().map(EventBooking->new EventBookingModel()).collect(Collectors.toList());
+            venueList=bookingRepository.findEventBookingByClient_Id(clientId).stream().map(EventBooking->new EventBookingModel()).collect(Collectors.toList());
         }
-
-        return eventBookingModelList;
+        return venueList;
     }
 
 }

@@ -14,13 +14,20 @@ public class VenueController {
     @Autowired
     VenueService venueService;
 
-    @PostMapping("/save")
-    private VenueModel saveVenue(@RequestBody VenueModel venueModel){
+    @PostMapping("/signup")
+    private String saveVenue(@RequestBody VenueModel venueModel){
         return venueService.saveVenue(venueModel);
     }
-    @GetMapping("/get")
-    private List<VenueModel> getVenue(@RequestParam(name = "venueId",required = false) String venueId){
-        return venueService.getVenue(venueId);
+    @GetMapping("/")
+    private List<VenueModel> login(@RequestParam (name = "id",required = false)String id, @RequestParam(name = "pass",required = false)String pass){
+        return venueService.getVenue(id,pass);
     }
-
+    @PutMapping("/update")
+    private String updateVenue(@RequestBody VenueModel venueModel){
+        return venueService.update(venueModel);
+    }
+    @DeleteMapping("/delete/{id}")
+    private String deleteVenue(@PathVariable(name = "id")String id){
+        return venueService.deleteVenue(id);
+    }
 }

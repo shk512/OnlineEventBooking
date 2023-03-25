@@ -14,8 +14,8 @@ import java.util.List;
 @Table(name="client")
 public class Client {
     @Id
-    @Column(name = "client_id")
-    private String clientId;
+    @Column(name = "id")
+    private String id;
 
     @OneToMany(mappedBy = "client")
     List<EventBooking> bookings;

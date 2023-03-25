@@ -8,13 +8,9 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class EventExecutionModel {
-    private int id;
-
+    private Long id;
+    private Long bookingId;
     private int attendee;
-
-    @Column(name = "totalAmount")
     private long totalAmount;
-
-    @Column (name = "concessionAmount")
     private long concessionAmount;
 }

@@ -6,6 +6,7 @@ import com.example.OnlineEventBooking.Service.EventBookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -17,13 +18,12 @@ public class EventBookingController {
 
     @PostMapping("/save")
     private String saveBooking(@RequestBody EventBookingModel bookingModel){
-        EventBookingModel eventBookingModelResponse=bookingService.saveOrUpdateBooking(bookingModel);
-        return "Your Booking has been successfully reserved. Your Booking Id is:"+eventBookingModelResponse.getId();
+        return bookingService.saveOrUpdateBooking(bookingModel);
     }
 
-    @GetMapping("/client/{clientId}/")
-    private List<EventBookingModel> getBookings(@RequestParam(name = "date",required = false)String date,@PathVariable(name = "clientId")String clientId){
-        return bookingService.getBookingByClient(date,clientId);
+    @GetMapping("/client/{clientId}")
+    private List<EventBookingModel> getBookings(@RequestParam(name = "date",required = false) Date date, @PathVariable(name = "clientId")String clientId){
+        return bookingService.getBookingByClientId(date,clientId);
     }
 
 }

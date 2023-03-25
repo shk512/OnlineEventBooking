@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 public class VenueModel {
     private String id;
     private String password;
+    private double perHeadRate;
     private PersonInfoModel personInfoModel;
     private String packageStartDate;
     private String packageEndsDate;
@@ -21,6 +22,7 @@ public class VenueModel {
 
         venue.setId(this.id);
         venue.setPassword(this.password);
+        venue.setPerHeadRate(this.perHeadRate);
         venue.setIsPackageActive(this.isPackageActive);
         venue.setPackageStartDate(this.packageStartDate);
         venue.setPackageEndsDate(this.packageEndsDate);
@@ -34,6 +36,7 @@ public class VenueModel {
 
         venueModel.setPackageEndsDate(venue.getPackageEndsDate());
         venueModel.setPassword(venue.getPassword());
+        venueModel.setPerHeadRate(venue.getPerHeadRate());
         venueModel.setPackageStartDate(venue.getPackageStartDate());
         venueModel.setPersonInfoModel(personInfoModel1.assemble(venue.getPersonInfo()));
         venueModel.setId(venue.getId());

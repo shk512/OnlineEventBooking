@@ -8,8 +8,12 @@ public class EventExecution {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "event_execution_id")
-    private Long eventExecutionId;
+    @Column(name = "id")
+    private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "booking_id")
+    private EventBooking bookingId;
 
     @Column(name = "attendee")
     private int attendee;
