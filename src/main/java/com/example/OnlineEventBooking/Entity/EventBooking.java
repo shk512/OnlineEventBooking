@@ -1,4 +1,5 @@
 package com.example.OnlineEventBooking.Entity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class EventBooking {
     @JoinColumn (name = "venue_id")
     private Venue venue;
     @Column(name = "date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
     @Column(name = "time")
     private String time;

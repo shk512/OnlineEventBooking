@@ -1,9 +1,12 @@
 package com.example.OnlineEventBooking.Model;
 
 import com.example.OnlineEventBooking.Entity.Venue;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 @Data
@@ -13,10 +16,19 @@ public class VenueModel {
     private String password;
     private double perHeadRate;
     private PersonInfoModel personInfoModel;
-    private String packageStartDate;
-    private String packageEndsDate;
+    private Date packageStartDate;
+    private Date packageEndsDate;
     private Boolean isPackageActive;
-
+    public VenueModel(Venue venue ){
+        PersonInfoModel personInfoModel1=new PersonInfoModel();
+        this.setId(venue.getId());
+        this.setPackageStartDate(venue.getPackageStartDate());
+        this.setPerHeadRate(venue.getPerHeadRate());
+        this.setPassword(venue.getPassword());
+        this.setPackageEndsDate(venue.getPackageEndsDate());
+        this.setIsPackageActive(venue.getIsPackageActive());
+        this.setPersonInfoModel(personInfoModel1.assemble(venue.getPersonInfo()));
+    }
     public Venue dissamble(){
         Venue venue=new Venue();
 
@@ -29,19 +41,5 @@ public class VenueModel {
         venue.setPersonInfo(this.personInfoModel.dissamble());
 
         return venue;
-    }
-    public VenueModel assemble(Venue venue){
-        VenueModel venueModel=new VenueModel();
-        PersonInfoModel personInfoModel1=new PersonInfoModel();
-
-        venueModel.setPackageEndsDate(venue.getPackageEndsDate());
-        venueModel.setPassword(venue.getPassword());
-        venueModel.setPerHeadRate(venue.getPerHeadRate());
-        venueModel.setPackageStartDate(venue.getPackageStartDate());
-        venueModel.setPersonInfoModel(personInfoModel1.assemble(venue.getPersonInfo()));
-        venueModel.setId(venue.getId());
-        venueModel.setIsPackageActive(venue.getIsPackageActive());
-
-        return  venueModel;
     }
 }

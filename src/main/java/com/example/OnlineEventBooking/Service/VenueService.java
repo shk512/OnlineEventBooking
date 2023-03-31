@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-
 public class VenueService {
 
     @Autowired
@@ -38,7 +37,7 @@ public class VenueService {
     }
     @Transactional
     private VenueModel upsert(VenueModel venueModel){
-        return venueModel.assemble(venueRepository.save(venueModel.dissamble()));
+        return new VenueModel(venueRepository.save(venueModel.dissamble()));
     }
     @Transactional
     private boolean searchVenue(String id){
@@ -46,14 +45,12 @@ public class VenueService {
     }
     public List<VenueModel> getVenue(String venueId,String pass){
         List<VenueModel> venueList;
-        VenueModel venueModel=new VenueModel();
         if(venueId!=null && pass!=null){
-            venueList=List.of(venueModel.assemble(venueRepository.findVenueByIdAndPassword(venueId,pass)));
+            venueList=Stream.of(venueRepository.findVenueByIdAndPassword(venueId,pass)).map(VenueModel::new).collect(Collectors.toList());
         }else if(venueId!=null){
-            venueList=List.of(venueModel.assemble(venueRepository.findVenueById(venueId)));
-            //venueList=venueRepository.findById(venueId).stream().map(Venue->new VenueModel()).collect(Collectors.toList());
+            venueList=Stream.of(venueRepository.findVenueById(venueId)).map(VenueModel::new).collect(Collectors.toList());
         }else{
-            venueList=venueRepository.findAll().stream().map(Venue->new VenueModel()).collect(Collectors.toList());
+            venueList= venueRepository.findAll().stream().map(VenueModel::new).collect(Collectors.toList());
         }
         return venueList;
     }

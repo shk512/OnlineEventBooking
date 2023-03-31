@@ -24,10 +24,12 @@ public class EventBookingModel {
     private ClientModel clientId;
     private VenueModel venueId;
     private EventExecutionModel eventExecutionModel;
+    public EventBookingModel(){
+
+    }
 
     public EventBooking dissamble(){
         EventBooking eventBooking=new EventBooking();
-
         eventBooking.setDate(this.date);
         eventBooking.setIsBookingConfirm(this.isBookingConfirm);
         eventBooking.setMenu(this.menu);
@@ -40,13 +42,11 @@ public class EventBookingModel {
         eventBooking.setExtraDetails(this.extraDetails);
         eventBooking.setClient(clientId.dissamble());
         eventBooking.setVenue(venueId.dissamble());
-
         return eventBooking;
     }
 
     public EventBookingModel assemble(EventBooking eventBooking){
         EventBookingModel eventBookingModel=new EventBookingModel();
-
         eventBookingModel.setId(eventBooking.getId());
         eventBookingModel.setDate(eventBooking.getDate());
         eventBookingModel.setTime(eventBooking.getTime());
@@ -58,10 +58,8 @@ public class EventBookingModel {
         eventBookingModel.setBalanceAmount(eventBooking.getBalanceAmount());
         eventBookingModel.setExtraDetails(eventBooking.getExtraDetails());
         eventBookingModel.setClientId(clientId.assemble(eventBooking.getClient()));
-        eventBookingModel.setVenueId(venueId.assemble(eventBooking.getVenue()));
+        eventBookingModel.setVenueId(new VenueModel(eventBooking.getVenue()));
         eventBookingModel.setIsBookingConfirm(eventBooking.getIsBookingConfirm());
-
-
         return eventBookingModel;
     }
 }

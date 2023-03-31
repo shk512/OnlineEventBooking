@@ -21,7 +21,7 @@ public class EventBookingController {
         return bookingService.saveOrUpdateBooking(bookingModel);
     }
 
-    @GetMapping("/client/{clientId}")
+    @GetMapping("/client/{clientId}/")
     private List<EventBookingModel> getBookings(@RequestParam(name = "date",required = false) Date date, @PathVariable(name = "clientId")String clientId){
         return bookingService.getBookingByClientId(date,clientId);
     }

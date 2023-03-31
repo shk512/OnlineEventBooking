@@ -11,7 +11,7 @@ public class ClientController {
     @Autowired
     ClientService clientService;
 
-    @PostMapping("/signup")
+    @PostMapping("/save")
     private String saveClient(@RequestBody ClientModel clientModel){
         return clientService.saveClient(clientModel);
     }
