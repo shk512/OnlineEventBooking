@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(name = "/payment")
+@RequestMapping("/payment")
 public class PaymentController {
     @Autowired
     PaymentService paymentService;
     @PostMapping("/save")
-    private PaymentModel savePayment(@RequestBody PaymentModel paymentModel){
+    private String savePayment(@RequestBody PaymentModel paymentModel){
         return paymentService.savePayment(paymentModel);
     }
     @GetMapping("/")

@@ -19,16 +19,25 @@ public class EventBookingService {
     EventBookingRepository bookingRepository;
 
     @Transactional
-    public String saveOrUpdateBooking(EventBookingModel bookingModel){
-        String result;
+    public Boolean saveBooking(EventBookingModel bookingModel){
+        boolean result;
         EventBooking eventBooking=bookingModel.dissamble();
         if(searchBooking(eventBooking.getVenue().getId(),eventBooking.getDate())){
             bookingRepository.save(eventBooking);
-            result="HURRAH! Congrats, Your booking has been reserved \n Your booking ID is:"+eventBooking.getId();
+            result=true;
         }else {
-            result="Oops! Sorry, Your requested date is already reserved.";
+            result=false;
         }
         return  result;
+    }
+    @Transactional
+    public Boolean updateBooking(EventBooking eventBooking){
+        if(searchBooking(eventBooking.getVenue().getId(), eventBooking.getDate())){
+            bookingRepository.save(eventBooking);
+            return true;
+        }else{
+            return  false;
+        }
     }
     @Transactional
     private Boolean searchBooking(String venue, Date date){
@@ -40,14 +49,17 @@ public class EventBookingService {
         }
         return  result;
     }
-
+    @Transactional
+    public EventBooking getBookingById(Long id){
+        return bookingRepository.findById(id).get();
+    }
     @Transactional
     public List<EventBookingModel> getBookingByClientId(Date date,String clientId){
         List<EventBookingModel> venueList;
         if(date!=null){
-            venueList=bookingRepository.findEventBookingByClient_IdAndDate(clientId, date).stream().map(EventBooking->new EventBookingModel()).collect(Collectors.toList());
+            venueList=bookingRepository.findEventBookingByClient_IdAndDate(clientId, date).stream().map(EventBookingModel::new).collect(Collectors.toList());
         }else{
-            venueList=bookingRepository.findEventBookingByClient_Id(clientId).stream().map(EventBooking->new EventBookingModel()).collect(Collectors.toList());
+            venueList=bookingRepository.findEventBookingByClient_Id(clientId).stream().map(EventBookingModel::new).collect(Collectors.toList());
         }
         return venueList;
     }

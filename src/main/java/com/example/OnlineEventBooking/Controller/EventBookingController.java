@@ -18,7 +18,13 @@ public class EventBookingController {
 
     @PostMapping("/save")
     private String saveBooking(@RequestBody EventBookingModel bookingModel){
-        return bookingService.saveOrUpdateBooking(bookingModel);
+        String result;
+        if(bookingService.saveBooking(bookingModel)){
+            result="HURRAH! Congrats, Your booking has been reserved.";
+        }else{
+            result="Oops! Sorry, Your requested date is already reserved.";
+        }
+        return result;
     }
 
     @GetMapping("/client/{clientId}/")

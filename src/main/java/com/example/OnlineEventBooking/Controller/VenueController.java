@@ -1,5 +1,5 @@
 package com.example.OnlineEventBooking.Controller;
-import com.example.OnlineEventBooking.Entity.Venue;
+
 import com.example.OnlineEventBooking.Model.VenueModel;
 import com.example.OnlineEventBooking.Service.VenueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class VenueController {
         return venueService.saveVenue(venueModel);
     }
     @GetMapping("/")
-    private List<VenueModel> login(@RequestParam (name = "id",required = false)String id, @RequestParam(name = "pass",required = false)String pass){
+    private List<VenueModel> getVenue(@RequestParam (name = "id",required = false)String id, @RequestParam(name = "pass",required = false)String pass){
         return venueService.getVenue(id,pass);
     }
     @PutMapping("/update")

@@ -2,13 +2,13 @@ package com.example.OnlineEventBooking.Model;
 
 import com.example.OnlineEventBooking.Entity.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.util.Date;
-import java.util.List;
 
 @Component
 @Data
+@NoArgsConstructor
 public class EventBookingModel {
     private Long id;
     private Date date;
@@ -24,8 +24,21 @@ public class EventBookingModel {
     private ClientModel clientId;
     private VenueModel venueId;
     private EventExecutionModel eventExecutionModel;
-    public EventBookingModel(){
 
+    public EventBookingModel(EventBooking eventBooking){
+        this.setId(eventBooking.getId());
+        this.setDate(eventBooking.getDate());
+        this.setTime(eventBooking.getTime());
+        this.setPersons(eventBooking.getPersons());
+        this.setMenu(eventBooking.getMenu());
+        this.setPaymentMode(eventBooking.getPaymentMode());
+        this.setTotalAmount(eventBooking.getTotalAmount());
+        this.setAdvanceAmount(eventBooking.getAdvanceAmount());
+        this.setBalanceAmount(eventBooking.getBalanceAmount());
+        this.setExtraDetails(eventBooking.getExtraDetails());
+        this.setClientId(clientId.assemble(eventBooking.getClient()));
+        this.setVenueId(new VenueModel(eventBooking.getVenue()));
+        this.setIsBookingConfirm(eventBooking.getIsBookingConfirm());
     }
 
     public EventBooking dissamble(){
@@ -43,23 +56,5 @@ public class EventBookingModel {
         eventBooking.setClient(clientId.dissamble());
         eventBooking.setVenue(venueId.dissamble());
         return eventBooking;
-    }
-
-    public EventBookingModel assemble(EventBooking eventBooking){
-        EventBookingModel eventBookingModel=new EventBookingModel();
-        eventBookingModel.setId(eventBooking.getId());
-        eventBookingModel.setDate(eventBooking.getDate());
-        eventBookingModel.setTime(eventBooking.getTime());
-        eventBookingModel.setPersons(eventBooking.getPersons());
-        eventBookingModel.setMenu(eventBooking.getMenu());
-        eventBookingModel.setPaymentMode(eventBooking.getPaymentMode());
-        eventBookingModel.setTotalAmount(eventBooking.getTotalAmount());
-        eventBookingModel.setAdvanceAmount(eventBooking.getAdvanceAmount());
-        eventBookingModel.setBalanceAmount(eventBooking.getBalanceAmount());
-        eventBookingModel.setExtraDetails(eventBooking.getExtraDetails());
-        eventBookingModel.setClientId(clientId.assemble(eventBooking.getClient()));
-        eventBookingModel.setVenueId(new VenueModel(eventBooking.getVenue()));
-        eventBookingModel.setIsBookingConfirm(eventBooking.getIsBookingConfirm());
-        return eventBookingModel;
     }
 }

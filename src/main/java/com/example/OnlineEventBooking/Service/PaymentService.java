@@ -12,8 +12,18 @@ import java.util.stream.Collectors;
 public class PaymentService {
     @Autowired
     PaymentRepository paymentRepository;
-    public PaymentModel savePayment(PaymentModel paymentModel){
-        return new PaymentModel(paymentRepository.save(paymentModel.dissamble()));
+    @Autowired
+    EventBookingService eventBookingService;
+    public String savePayment(PaymentModel paymentModel){
+
+        String result;
+        if(eventBookingService.updateBooking(paymentModel.dissamble().getEventBooking())){
+            new PaymentModel(paymentRepository.save(paymentModel.dissamble()));
+            result="Transaction completed";
+        }else {
+            result="Error";
+        }
+        return result;
     }
     public List<PaymentModel> getPayments(Long bookingId){
         List<PaymentModel> paymentList;
