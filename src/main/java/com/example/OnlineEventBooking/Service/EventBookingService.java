@@ -61,8 +61,21 @@ public class EventBookingService {
         return bookingRepository.findById(id).get();
     }
     @Transactional
-    public List<EventBookingModel> getBookingByClientId(Long clientId){
-        return bookingRepository.findEventBookingByClient_Id(clientId).stream().map(EventBookingModel::new).collect(Collectors.toList());
+    public List<EventBookingModel> getBookingByClientId(Long clientId,Long venueId,Date date){
+        List<EventBookingModel> list;
+        if(clientId!=null&&venueId==null&&date==null)
+        {
+            list = bookingRepository.findEventBookingByClient_Id(clientId).stream().map(EventBookingModel::new).collect(Collectors.toList());
+        }else if(venueId!=null&&clientId==null&&date==null){
+            list=bookingRepository.findEventBookingByVenue_Id(venueId).stream().map(EventBookingModel::new).collect(Collectors.toList());
+        }else if(date!=null&&venueId!=null&&clientId==null){
+            list=bookingRepository.findEventBookingByVenue_IdAndDate(venueId,date).stream().map(EventBookingModel::new).collect(Collectors.toList());
+        } else if (date!=null&&clientId!=null&&venueId==null) {
+            list=bookingRepository.findEventBookingbyClient_IdAndDate(clientId,date).stream().map(EventBookingModel::new).collect(Collectors.toList());
+        }else {
+            list=null;
+        }
+        return  list;
     }
     @Transactional
     public String deleteBooking(Long id){

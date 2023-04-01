@@ -10,6 +10,8 @@ import java.util.List;
 
 @Repository
 public interface EventBookingRepository extends JpaRepository<EventBooking,Long> {
-    EventBooking findEventBookingByVenue_IdAndDate(Long venueId, Date date);
+    List<EventBooking> findEventBookingByVenue_IdAndDate(Long venueId, Date date);
     List<EventBooking> findEventBookingByClient_Id(Long clientId);
+    List<EventBooking> findEventBookingByVenue_Id(Long venueId);
+    List<EventBooking> findEventBookingbyClient_IdAndDate(Long clientId,Date date);
 }
