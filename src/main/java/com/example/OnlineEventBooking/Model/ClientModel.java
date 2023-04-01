@@ -8,12 +8,11 @@ import org.springframework.stereotype.Component;
 @Data
 @NoArgsConstructor
 public class ClientModel {
-    private String id;
+    private Long id;
     private PersonInfoModel personInfoModel;
     public ClientModel(Client client){
-        PersonInfoModel personInfoModel1=new PersonInfoModel();
         this.setId(client.getId());
-        this.setPersonInfoModel(personInfoModel1.assemble(client.getPersonInfo()));
+        this.setPersonInfoModel(new PersonInfoModel(client.getPersonInfo()));
     }
     public Client dissamble() {
         Client client = new Client();

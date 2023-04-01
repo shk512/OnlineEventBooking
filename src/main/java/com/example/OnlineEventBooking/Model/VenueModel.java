@@ -12,28 +12,24 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 public class VenueModel {
-    private String id;
-    private String password;
+    private Long id;
     private double perHeadRate;
     private PersonInfoModel personInfoModel;
     private Date packageStartDate;
     private Date packageEndsDate;
     private Boolean isPackageActive;
     public VenueModel(Venue venue ){
-        PersonInfoModel personInfoModel1=new PersonInfoModel();
         this.setId(venue.getId());
         this.setPackageStartDate(venue.getPackageStartDate());
         this.setPerHeadRate(venue.getPerHeadRate());
-        this.setPassword(venue.getPassword());
         this.setPackageEndsDate(venue.getPackageEndsDate());
         this.setIsPackageActive(venue.getIsPackageActive());
-        this.setPersonInfoModel(personInfoModel1.assemble(venue.getPersonInfo()));
+        this.setPersonInfoModel(new PersonInfoModel(venue.getPersonInfo()));
     }
     public Venue dissamble(){
         Venue venue=new Venue();
 
         venue.setId(this.id);
-        venue.setPassword(this.password);
         venue.setPerHeadRate(this.perHeadRate);
         venue.setIsPackageActive(this.isPackageActive);
         venue.setPackageStartDate(this.packageStartDate);

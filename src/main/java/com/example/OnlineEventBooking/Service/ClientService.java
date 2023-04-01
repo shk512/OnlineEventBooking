@@ -7,49 +7,44 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
     @Transactional
-    public String saveClient(ClientModel clientModel){
-        String result;
-        if(searchClient(clientModel.dissamble().getId())){
-            result="Username already exists. Please find another one";
+    public ClientModel saveClient(ClientModel clientModel){
+        ClientModel responseModel;
+        Client client=searchClient(clientModel.getPersonInfoModel().getContact());
+        if(client!=null){
+            responseModel=new ClientModel(clientRepository.save(clientModel.dissamble()));
+        }
+        else {
+            responseModel=new ClientModel(clientRepository.save(clientModel.dissamble()));
+        }
+        return responseModel;
+    }
+    @Transactional
+    public List<ClientModel> getClient(Long clientId){
+        List<ClientModel> clientModelList;
+        if(clientId!=null){
+            clientModelList=clientRepository.findById(clientId).stream().map(ClientModel::new).collect(Collectors.toList());
         }else {
-            upsert(clientModel);
-            result="Save Successfully";
+            clientModelList=clientRepository.findAll().stream().map(ClientModel::new).collect(Collectors.toList());
         }
-        return  result;
+        return clientModelList;
     }
     @Transactional
-    public String updateClient(ClientModel clientModel){
+    public Client searchClient(String contact){
+        return clientRepository.findClientByPersonInfo_Contact(contact);
+    }
+    @Transactional
+    public String deleteClient(Long clientId){
         String result;
-        if(searchClient(clientModel.dissamble().getId())){
-            upsert(clientModel);
-            result="Updated";
-        }else{
-            result="Oops! User not found.";
-        }
-        return result;
-    }
-    @Transactional
-    public boolean searchClient(String  clientId){
-        return clientRepository.existsById(clientId);
-    }
-    @Transactional
-    public ClientModel upsert(ClientModel clientModel){
-        return new ClientModel(clientRepository.save(clientModel.dissamble()));
-    }
-    @Transactional
-    public ClientModel getClient(String id){
-        return new ClientModel(clientRepository.findClientById(id));
-    }
-    @Transactional
-    public String deleteClient(String clientId){
-        String result;
-        if(searchClient(clientId)) {
+        if(clientRepository.existsById(clientId)) {
             clientRepository.deleteById(clientId);
             result="Deleted";
         }else{

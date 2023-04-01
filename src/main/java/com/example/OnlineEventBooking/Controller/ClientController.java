@@ -5,6 +5,8 @@ import com.example.OnlineEventBooking.Service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/client")
 public class ClientController {
@@ -12,19 +14,15 @@ public class ClientController {
     ClientService clientService;
 
     @PostMapping("/save")
-    private String saveClient(@RequestBody ClientModel clientModel){
+    private ClientModel saveClient(@RequestBody ClientModel clientModel){
         return clientService.saveClient(clientModel);
     }
-    @PutMapping("/update")
-    private String updateClient(@RequestBody ClientModel clientModel){
-        return clientService.updateClient(clientModel);
-    }
     @DeleteMapping("/delete/{id}")
-    private String deleteClient(@PathVariable(name = "id") String clientId){
+    private String deleteClient(@PathVariable(name = "id") Long clientId){
         return clientService.deleteClient(clientId);
     }
-    @GetMapping("/{id}")
-    private ClientModel getClientById(@PathVariable(name = "id")String clientId){
+    @GetMapping("/")
+    private List<ClientModel> getClientById(@RequestParam(name = "id",required = false)Long clientId){
         return clientService.getClient(clientId);
     }
 }

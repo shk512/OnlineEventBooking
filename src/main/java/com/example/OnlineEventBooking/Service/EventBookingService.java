@@ -1,6 +1,9 @@
 package com.example.OnlineEventBooking.Service;
 
+import com.example.OnlineEventBooking.Entity.Client;
 import com.example.OnlineEventBooking.Entity.EventBooking;
+import com.example.OnlineEventBooking.Entity.Venue;
+import com.example.OnlineEventBooking.Model.ClientModel;
 import com.example.OnlineEventBooking.Model.EventBookingModel;
 import com.example.OnlineEventBooking.Repository.EventBookingRepository;
 import jakarta.transaction.Transactional;
@@ -15,32 +18,36 @@ import java.util.stream.Collectors;
 @Service
 public class EventBookingService {
 
-  @Autowired
+    @Autowired
     EventBookingRepository bookingRepository;
+    @Autowired
+    ClientService clientService;
+    @Autowired
+    VenueService venueService;
+    @Transactional
+    public EventBookingModel saveBooking(EventBookingModel bookingModel){
+        EventBookingModel eventBookingModel;
+        Client client=clientService.saveClient(bookingModel.getClientId()).dissamble();
+        Venue venue=venueService.getVenueEntity(bookingModel.getVenueId().getId());
+        if(bookingModel.getId()!=null){
+            if(bookingRepository.existsById(bookingModel.getId()))
+            {
+                eventBookingModel=new EventBookingModel(bookingRepository.save(bookingModel.dissamble(client,venue)));
+            }else {
+                eventBookingModel=null;
+            }
 
-    @Transactional
-    public Boolean saveBooking(EventBookingModel bookingModel){
-        boolean result;
-        EventBooking eventBooking=bookingModel.dissamble();
-        if(searchBooking(eventBooking.getVenue().getId(),eventBooking.getDate())){
-            bookingRepository.save(eventBooking);
-            result=true;
-        }else {
-            result=false;
-        }
-        return  result;
-    }
-    @Transactional
-    public Boolean updateBooking(EventBooking eventBooking){
-        if(searchBooking(eventBooking.getVenue().getId(), eventBooking.getDate())){
-            bookingRepository.save(eventBooking);
-            return true;
         }else{
-            return  false;
+            if(searchBooking(venue.getId(),bookingModel.getDate())){
+                eventBookingModel=new EventBookingModel(bookingRepository.save(bookingModel.dissamble(client,venue)));
+            }else {
+                eventBookingModel=null;
+            }
         }
+        return  eventBookingModel;
     }
     @Transactional
-    private Boolean searchBooking(String venue, Date date){
+    private Boolean searchBooking(Long venue, Date date){
         boolean result;
         if(bookingRepository.findEventBookingByVenue_IdAndDate(venue,date)!=null){
             result=false;
@@ -54,14 +61,19 @@ public class EventBookingService {
         return bookingRepository.findById(id).get();
     }
     @Transactional
-    public List<EventBookingModel> getBookingByClientId(Date date,String clientId){
-        List<EventBookingModel> venueList;
-        if(date!=null){
-            venueList=bookingRepository.findEventBookingByClient_IdAndDate(clientId, date).stream().map(EventBookingModel::new).collect(Collectors.toList());
-        }else{
-            venueList=bookingRepository.findEventBookingByClient_Id(clientId).stream().map(EventBookingModel::new).collect(Collectors.toList());
+    public List<EventBookingModel> getBookingByClientId(Long clientId){
+        return bookingRepository.findEventBookingByClient_Id(clientId).stream().map(EventBookingModel::new).collect(Collectors.toList());
+    }
+    @Transactional
+    public String deleteBooking(Long id){
+        String response;
+        if(getBookingById(id)!=null){
+            bookingRepository.deleteById(id);
+            response="Deleted Successfully";
+        }else {
+            response="Not Found";
         }
-        return venueList;
+        return response;
     }
 
 }

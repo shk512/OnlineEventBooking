@@ -15,7 +15,8 @@ import java.util.List;
 public class Client {
     @Id
     @Column(name = "id")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @OneToMany(mappedBy = "client")
     List<EventBooking> bookings;

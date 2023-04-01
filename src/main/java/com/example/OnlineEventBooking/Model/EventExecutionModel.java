@@ -28,8 +28,8 @@ public class EventExecutionModel {
         EventExecution eventExecution=new EventExecution();
         eventExecution.setAttendee(this.getAttendee());
         eventExecution.setConcessionAmount(this.concessionAmount);
-        eventExecution.setTotalAmount(this.getAttendee()>eventBooking.getPersons()?eventBooking.getVenue().getPerHeadRate()*this.getAttendee()-this.getConcessionAmount():eventBooking.getTotalAmount()-this.getConcessionAmount());
-        eventExecution.setBalanceAmount(eventExecution.getTotalAmount()-eventExecution.getConcessionAmount()-eventBooking.getBalanceAmount());
+        eventExecution.setTotalAmount(this.getAttendee()>eventBooking.getPersons()?eventBooking.getVenue().getPerHeadRate()*this.getAttendee():eventBooking.getTotalAmount());
+        eventExecution.setBalanceAmount(eventExecution.getTotalAmount()-eventExecution.getConcessionAmount()-eventBooking.getAdvanceAmount());
         eventExecution.setEventBooking(eventBooking);
         return  eventExecution;
     }

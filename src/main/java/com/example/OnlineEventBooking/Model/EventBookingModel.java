@@ -40,8 +40,9 @@ public class EventBookingModel {
         this.setIsBookingConfirm(eventBooking.getIsBookingConfirm());
     }
 
-    public EventBooking dissamble(){
+    public EventBooking dissamble(Client client,Venue venue){
         EventBooking eventBooking=new EventBooking();
+        eventBooking.setId(this.id);
         eventBooking.setDate(this.date);
         eventBooking.setIsBookingConfirm(this.isBookingConfirm);
         eventBooking.setMenu(this.menu);
@@ -49,11 +50,11 @@ public class EventBookingModel {
         eventBooking.setAdvanceAmount(this.advanceAmount);
         eventBooking.setTime(this.time);
         eventBooking.setPersons(this.persons);
-        eventBooking.setTotalAmount(venueId.getPerHeadRate()*this.persons);
+        eventBooking.setTotalAmount(venue.getPerHeadRate()*this.persons);
         eventBooking.setBalanceAmount(eventBooking.getTotalAmount()-this.advanceAmount);
         eventBooking.setExtraDetails(this.extraDetails);
-        eventBooking.setClient(clientId.dissamble());
-        eventBooking.setVenue(venueId.dissamble());
+        eventBooking.setClient(client);
+        eventBooking.setVenue(venue);
         return eventBooking;
     }
 }

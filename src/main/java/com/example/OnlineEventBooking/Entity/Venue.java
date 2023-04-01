@@ -16,15 +16,14 @@ public class Venue {
 
     @Id
     @Column(name = "id")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @OneToMany(mappedBy = "venue")
     List<EventBooking> bookings;
     @Embedded
     private PersonInfo personInfo;
     @Column(name = "per_head_rate")
     private double perHeadRate;
-    @Column(name = "password")
-    private String password;
     @Column(name = "package_start_date")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date packageStartDate;
