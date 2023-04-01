@@ -14,16 +14,8 @@ public class PaymentService {
     PaymentRepository paymentRepository;
     @Autowired
     EventBookingService eventBookingService;
-    public String savePayment(PaymentModel paymentModel){
-
-        String result;
-        if(eventBookingService.updateBooking(paymentModel.dissamble().getEventBooking())){
-            new PaymentModel(paymentRepository.save(paymentModel.dissamble()));
-            result="Transaction completed";
-        }else {
-            result="Error";
-        }
-        return result;
+    public PaymentModel savePayment(PaymentModel paymentModel){
+        return new PaymentModel(paymentRepository.save(paymentModel.dissamble(eventBookingService.getBookingById(paymentModel.getEventBookingModel().getId()))));
     }
     public List<PaymentModel> getPayments(Long bookingId){
         List<PaymentModel> paymentList;

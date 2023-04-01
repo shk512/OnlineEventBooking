@@ -13,7 +13,7 @@ import java.util.Date;
 public class Payment {
     @Id
     @Column(name = "transaction_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionId;
     @ManyToOne
     @JoinColumn(name = "booking_id")

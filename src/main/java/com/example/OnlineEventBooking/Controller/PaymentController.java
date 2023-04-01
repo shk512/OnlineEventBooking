@@ -13,7 +13,7 @@ public class PaymentController {
     @Autowired
     PaymentService paymentService;
     @PostMapping("/save")
-    private String savePayment(@RequestBody PaymentModel paymentModel){
+    private PaymentModel savePayment(@RequestBody PaymentModel paymentModel){
         return paymentService.savePayment(paymentModel);
     }
     @GetMapping("/")

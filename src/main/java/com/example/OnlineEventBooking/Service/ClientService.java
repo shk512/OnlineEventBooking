@@ -40,12 +40,11 @@ public class ClientService {
     }
     @Transactional
     public ClientModel upsert(ClientModel clientModel){
-        return clientModel.assemble(clientRepository.save(clientModel.dissamble()));
+        return new ClientModel(clientRepository.save(clientModel.dissamble()));
     }
     @Transactional
     public ClientModel getClient(String id){
-        ClientModel clientModel=new ClientModel();
-        return clientModel.assemble(clientRepository.findClientById(id));
+        return new ClientModel(clientRepository.findClientById(id));
     }
     @Transactional
     public String deleteClient(String clientId){

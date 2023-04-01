@@ -23,7 +23,6 @@ public class EventBookingModel {
     private Boolean isBookingConfirm;
     private ClientModel clientId;
     private VenueModel venueId;
-    private EventExecutionModel eventExecutionModel;
 
     public EventBookingModel(EventBooking eventBooking){
         this.setId(eventBooking.getId());
@@ -36,7 +35,7 @@ public class EventBookingModel {
         this.setAdvanceAmount(eventBooking.getAdvanceAmount());
         this.setBalanceAmount(eventBooking.getBalanceAmount());
         this.setExtraDetails(eventBooking.getExtraDetails());
-        this.setClientId(clientId.assemble(eventBooking.getClient()));
+        this.setClientId(new ClientModel(eventBooking.getClient()));
         this.setVenueId(new VenueModel(eventBooking.getVenue()));
         this.setIsBookingConfirm(eventBooking.getIsBookingConfirm());
     }

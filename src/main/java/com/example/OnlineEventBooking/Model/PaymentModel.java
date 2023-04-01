@@ -23,11 +23,12 @@ public class PaymentModel {
         this.setEventBookingModel(new EventBookingModel(payment.getEventBooking()));
         this.setTransactionId(payment.getTransactionId());
     }
-    public Payment dissamble(){
+    public Payment dissamble(EventBooking eventBooking){
         Payment payment=new Payment();
         payment.setPaymentMode(this.paymentMode);
         payment.setTransactionId(this.transactionId);
         payment.setAmountReceived(this.amountReceived);
+        payment.setEventBooking(eventBooking);
         payment.setDate(new Date());
         return payment;
     }
