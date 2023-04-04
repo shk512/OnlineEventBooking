@@ -7,12 +7,36 @@ info:
     email: mukarramshk512@gmail.com
 
 tags:
+  - name: Venue
+    description: Endpoints for Venue
+  - name: Client
+    description: Endpoints for Client
   - name: EventBooking
     description: Endpoints for Event Booking
   - name: EventExecution
     description: Endpoints for Event Execution
+  - name: Payment
+    description: Enpoints for Payment
 
 paths:
+  /venue/signup:
+    post:
+      tags:
+        - Venue
+      summary: Endpoints to Register Venue
+      operationId: venueRegistration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VenueModel'
+      responses:
+        '200':
+          description: Successful country record has been saved or updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VenueModel'
   /booking/client:
     get:
       tags:
@@ -97,7 +121,8 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
+          format: int64
         PersonInfoModel:
           type: object
           $ref: '#/components/schemas/PersonInfoModel'
@@ -106,7 +131,8 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
+          format: int64
         password:
           type: string
         packageStartDate:
