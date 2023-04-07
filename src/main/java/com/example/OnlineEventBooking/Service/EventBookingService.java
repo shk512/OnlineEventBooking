@@ -25,34 +25,44 @@ public class EventBookingService {
     @Autowired
     VenueService venueService;
     @Transactional
-    public EventBookingModel saveBooking(EventBookingModel bookingModel){
-        EventBookingModel eventBookingModel;
+    public String saveBooking(EventBookingModel bookingModel){
+        String response;
         Client client=clientService.saveClient(bookingModel.getClientId()).dissamble();
         Venue venue=venueService.getVenueEntity(bookingModel.getVenueId().getId());
         if(bookingModel.getId()!=null){
             if(bookingRepository.existsById(bookingModel.getId()))
             {
-                eventBookingModel=new EventBookingModel(bookingRepository.save(bookingModel.dissamble(client,venue)));
+                EventBooking eventBooking=bookingRepository.save(bookingModel.dissamble(client,venue));
+                response=eventBooking!=null?"Booking updated successfully":"Oops! Not updated Successfully";
             }else {
-                eventBookingModel=null;
+                response="Record not found against correspond Id";
             }
 
         }else{
-            if(searchBooking(venue.getId(),bookingModel.getDate())){
-                eventBookingModel=new EventBookingModel(bookingRepository.save(bookingModel.dissamble(client,venue)));
+            if(!searchBooking(venue.getId(),bookingModel.getDate(),bookingModel.getTime())){
+                EventBooking eventBooking=bookingRepository.save(bookingModel.dissamble(client,venue));
+                response=eventBooking!=null?"Booking Saved successfully with boooking Id:"+eventBooking.getId():"Oops! Not Saved Successfully";
             }else {
-                eventBookingModel=null;
+                if(bookingModel.getTime().equalsIgnoreCase("morning")){
+                    if(!searchBooking(venue.getId(),bookingModel.getDate(),"evening")){
+                        response="Oops! Morning reserved but Evening time available.";
+                    }else{
+                        response="Oops! Try another date.";
+                    }
+                }else{
+                    response="Oops! Already reserved. Try another date.";
+                }
             }
         }
-        return  eventBookingModel;
+        return  response;
     }
     @Transactional
-    private Boolean searchBooking(Long venue, Date date){
+    private Boolean searchBooking(Long venue, Date date,String time){
         boolean result;
-        if(bookingRepository.findEventBookingByVenue_IdAndDate(venue,date)!=null){
-            result=false;
-        }else{
+        if(bookingRepository.findEventBookingByVenue_IdAndDateAndTime(venue,date,time)!=null){
             result=true;
+        }else{
+            result=false;
         }
         return  result;
     }
@@ -61,21 +71,17 @@ public class EventBookingService {
         return bookingRepository.findById(id).get();
     }
     @Transactional
-    public List<EventBookingModel> getBookingByClientId(Long clientId,Long venueId,Date date){
+    public List<EventBookingModel> getBookingByClientId(Long clientId,Long venueId,Long bookingId){
         List<EventBookingModel> list;
-        if(clientId!=null&&venueId==null&&date==null)
+        if(clientId!=null&&venueId==null&&bookingId==null)
         {
             list = bookingRepository.findEventBookingByClient_Id(clientId).stream().map(EventBookingModel::new).collect(Collectors.toList());
         }
-        else if(venueId!=null&&clientId==null&&date==null){
+        else if(venueId!=null&&clientId==null&&bookingId==null){
             list=bookingRepository.findEventBookingByVenue_Id(venueId).stream().map(EventBookingModel::new).collect(Collectors.toList());
         }
-        else if(date!=null&&venueId!=null&&clientId==null){
-            list=bookingRepository.findEventBookingByVenue_IdAndDate(venueId,date).stream().map(EventBookingModel::new).collect(Collectors.toList());
-        }
-        else if (date!=null&&clientId!=null&&venueId==null) {
-            //list=bookingRepository.findEventBookingbyClient_IdAndDate(clientId,date).stream().map(EventBookingModel::new).collect(Collectors.toList());
-            list=null;
+        else if(bookingId!=null&&venueId==null&&clientId==null){
+           list=bookingRepository.findById(bookingId).stream().map(EventBookingModel::new).collect(Collectors.toList());
         }
         else {
             list=null;
@@ -86,7 +92,7 @@ public class EventBookingService {
     public String deleteBooking(Long id){
         String response;
 
-        if(getBookingById(id)!=null){
+        if(bookingRepository.existsById(id)){
             bookingRepository.deleteById(id);
             response="Deleted Successfully";
         }else {

@@ -19,7 +19,6 @@ public class EventBookingModel {
     private double balanceAmount;
     private String menu;
     private String extraDetails;
-    private String paymentMode;
     private Boolean isBookingConfirm;
     private ClientModel clientId;
     private VenueModel venueId;
@@ -30,7 +29,6 @@ public class EventBookingModel {
         this.setTime(eventBooking.getTime());
         this.setPersons(eventBooking.getPersons());
         this.setMenu(eventBooking.getMenu());
-        this.setPaymentMode(eventBooking.getPaymentMode());
         this.setTotalAmount(eventBooking.getTotalAmount());
         this.setAdvanceAmount(eventBooking.getAdvanceAmount());
         this.setBalanceAmount(eventBooking.getBalanceAmount());
@@ -46,7 +44,6 @@ public class EventBookingModel {
         eventBooking.setDate(this.date);
         eventBooking.setIsBookingConfirm(this.isBookingConfirm);
         eventBooking.setMenu(this.menu);
-        eventBooking.setPaymentMode(this.paymentMode);
         eventBooking.setAdvanceAmount(this.advanceAmount);
         eventBooking.setTime(this.time);
         eventBooking.setPersons(this.persons);

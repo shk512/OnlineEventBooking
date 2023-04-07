@@ -46,8 +46,6 @@ public class EventBooking {
     private String menu;
     @Column(name = "extra_details")
     private String extraDetails;
-    @Column(name = "payment_mode")
-    private String paymentMode;
     @Column(name = "is_booking_confirm")
     private Boolean isBookingConfirm;
 }
