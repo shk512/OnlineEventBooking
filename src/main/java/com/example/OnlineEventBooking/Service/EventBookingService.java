@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class EventBookingService {
+public class EventBookingService{
 
     @Autowired
     EventBookingRepository bookingRepository;
@@ -33,25 +33,29 @@ public class EventBookingService {
             if(bookingRepository.existsById(bookingModel.getId()))
             {
                 EventBooking eventBooking=bookingRepository.save(bookingModel.dissamble(client,venue));
-                response=eventBooking!=null?"Booking updated successfully":"Oops! Not updated Successfully";
+                response="Booking updated successfully";
             }else {
                 response="Record not found against correspond Id";
             }
 
         }else{
-            if(!searchBooking(venue.getId(),bookingModel.getDate(),bookingModel.getTime())){
-                EventBooking eventBooking=bookingRepository.save(bookingModel.dissamble(client,venue));
-                response=eventBooking!=null?"Booking Saved successfully with boooking Id:"+eventBooking.getId():"Oops! Not Saved Successfully";
-            }else {
-                if(bookingModel.getTime().equalsIgnoreCase("morning")){
-                    if(!searchBooking(venue.getId(),bookingModel.getDate(),"evening")){
-                        response="Oops! Morning reserved but Evening time available.";
+            if(venue.getIsPackageActive()){
+                if(searchBooking(venue.getId(),bookingModel.getDate(),bookingModel.getTime())){
+                    EventBooking eventBooking=bookingRepository.save(bookingModel.dissamble(client,venue));
+                    response="Booking Saved successfully with boooking Id:"+eventBooking.getId();
+                }else {
+                    if(bookingModel.getTime().equalsIgnoreCase("morning")){
+                        if(searchBooking(venue.getId(),bookingModel.getDate(),"evening")){
+                            response="Oops! Morning time reserved but Evening time available.";
+                        }else{
+                            response="Oops! Try another date.";
+                        }
                     }else{
-                        response="Oops! Try another date.";
+                        response="Oops! Already reserved. Try another date.";
                     }
-                }else{
-                    response="Oops! Already reserved. Try another date.";
                 }
+            }else{
+                response="Couldn't save. Venue is inactive to book events";
             }
         }
         return  response;
@@ -60,9 +64,9 @@ public class EventBookingService {
     private Boolean searchBooking(Long venue, Date date,String time){
         boolean result;
         if(bookingRepository.findEventBookingByVenue_IdAndDateAndTime(venue,date,time)!=null){
-            result=true;
-        }else{
             result=false;
+        }else{
+            result=true;
         }
         return  result;
     }

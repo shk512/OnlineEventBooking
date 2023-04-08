@@ -30,7 +30,6 @@ public class EventBooking {
     @JoinColumn (name = "venue_id")
     private Venue venue;
     @Column(name = "date")
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
     @Column(name = "time")
     private String time;

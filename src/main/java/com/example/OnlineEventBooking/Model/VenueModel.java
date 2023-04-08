@@ -1,6 +1,8 @@
 package com.example.OnlineEventBooking.Model;
 
 import com.example.OnlineEventBooking.Entity.Venue;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,8 +16,11 @@ import java.util.Date;
 public class VenueModel {
     private Long id;
     private double perHeadRate;
+    @JsonProperty("personInfo")
     private PersonInfoModel personInfoModel;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date packageStartDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date packageEndsDate;
     private Boolean isPackageActive;
     public VenueModel(Venue venue ){

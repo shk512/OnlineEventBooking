@@ -1,5 +1,6 @@
 package com.example.OnlineEventBooking.Model;
 import com.example.OnlineEventBooking.Entity.Client;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class ClientModel {
     private Long id;
+    @JsonProperty("personInfo")
     private PersonInfoModel personInfoModel;
     public ClientModel(Client client){
         this.setId(client.getId());

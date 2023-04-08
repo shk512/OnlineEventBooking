@@ -1,6 +1,8 @@
 package com.example.OnlineEventBooking.Model;
 
 import com.example.OnlineEventBooking.Entity.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class EventBookingModel {
     private Long id;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
     private String time;
     private int persons;
@@ -20,7 +23,9 @@ public class EventBookingModel {
     private String menu;
     private String extraDetails;
     private Boolean isBookingConfirm;
+    @JsonProperty("client")
     private ClientModel clientId;
+    @JsonProperty("venue")
     private VenueModel venueId;
 
     public EventBookingModel(EventBooking eventBooking){

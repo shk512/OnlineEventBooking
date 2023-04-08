@@ -19,7 +19,6 @@ public class Payment {
     @JoinColumn(name = "booking_id")
     private EventBooking eventBooking;
     @Column(name = "date")
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
     @Column(name = "payment_mode")
     private String paymentMode;

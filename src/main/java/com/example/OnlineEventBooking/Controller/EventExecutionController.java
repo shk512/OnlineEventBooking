@@ -12,7 +12,7 @@ import java.util.List;
 public class EventExecutionController {
     @Autowired
     EventExecutionService eventExecutionService;
-    @PostMapping("/save")
+    @PostMapping("/event")
     private String executeEvent(@RequestBody EventExecutionModel eventExecutionModel){
         return eventExecutionService.executeEvent(eventExecutionModel);
     }
