@@ -27,10 +27,6 @@ public class EventBooking {
     @ManyToOne
     @JoinColumn (name = "venue_id")
     private Venue venue;
-    @Column(name = "username")
-    private String username;
-    @Column(name = "password")
-    private String password;
     @Column(name = "date")
     private Date date;
     @Column(name = "time")

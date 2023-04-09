@@ -18,8 +18,8 @@ public class EventBookingController {
         return bookingService.saveBooking(bookingModel);
     }
     @GetMapping("/")
-    private List<EventBookingModel> getBookings(@RequestParam(name = "clientId",required = false)Long clientId,@RequestParam(name = "venueId",required = false)Long venueId,@RequestParam(name = "bookingId",required = false) Long bookingId){
-        return bookingService.getBookingByClientId(clientId,venueId,bookingId);
+    private List<EventBookingModel> getBookings(@RequestParam(name = "venueId",required = false)Long venueId,@RequestParam(name = "bookingId",required = false) Long bookingId){
+        return bookingService.getBookingForVenue(venueId,bookingId);
     }
     @DeleteMapping("/delete{id}")
     private String deleteBooking(@PathVariable(name = "id")Long id){

@@ -9,22 +9,21 @@ import com.example.OnlineEventBooking.Repository.EventBookingRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class EventBookingService{
 
     @Autowired
-    EventBookingRepository bookingRepository;
+    private EventBookingRepository bookingRepository;
     @Autowired
-    ClientService clientService;
+    private ClientService clientService;
     @Autowired
-    VenueService venueService;
-    @Transactional
+    private VenueService venueService;
     public String saveBooking(EventBookingModel bookingModel){
         String response;
         Client client=clientService.saveClient(bookingModel.getClientId()).dissamble();
@@ -60,7 +59,6 @@ public class EventBookingService{
         }
         return  response;
     }
-    @Transactional
     private Boolean searchBooking(Long venue, Date date,String time){
         boolean result;
         if(bookingRepository.findEventBookingByVenue_IdAndDateAndTime(venue,date,time)!=null){
@@ -70,21 +68,15 @@ public class EventBookingService{
         }
         return  result;
     }
-    @Transactional
     public EventBooking getBookingById(Long id){
         return bookingRepository.findById(id).get();
     }
-    @Transactional
-    public List<EventBookingModel> getBookingByClientId(Long clientId,Long venueId,Long bookingId){
+    public List<EventBookingModel> getBookingForVenue(Long venueId,Long bookingId){
         List<EventBookingModel> list;
-        if(clientId!=null&&venueId==null&&bookingId==null)
-        {
-            list = bookingRepository.findEventBookingByClient_Id(clientId).stream().map(EventBookingModel::new).collect(Collectors.toList());
-        }
-        else if(venueId!=null&&clientId==null&&bookingId==null){
+        if(venueId!=null&&bookingId==null){
             list=bookingRepository.findEventBookingByVenue_Id(venueId).stream().map(EventBookingModel::new).collect(Collectors.toList());
         }
-        else if(bookingId!=null&&venueId==null&&clientId==null){
+        else if(bookingId!=null&&venueId==null){
            list=bookingRepository.findById(bookingId).stream().map(EventBookingModel::new).collect(Collectors.toList());
         }
         else {
@@ -92,7 +84,9 @@ public class EventBookingService{
         }
         return  list;
     }
-    @Transactional
+    public List<EventBookingModel> getBookingForClient(String contact){
+        return bookingRepository.findEventBookingByClient_PersonInfo_Contact(contact).stream().map(EventBookingModel::new).collect(Collectors.toList());
+    }
     public String deleteBooking(Long id){
         String response;
 

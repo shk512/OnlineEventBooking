@@ -1,7 +1,8 @@
 package com.example.OnlineEventBooking.Controller;
-import com.example.OnlineEventBooking.Entity.Client;
-import com.example.OnlineEventBooking.Model.ClientModel;
+import com.example.OnlineEventBooking.Model.EventBookingModel;
+import com.example.OnlineEventBooking.Model.VenueModel;
 import com.example.OnlineEventBooking.Service.ClientService;
+import com.example.OnlineEventBooking.Service.EventBookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,17 +13,19 @@ import java.util.List;
 public class ClientController {
     @Autowired
     ClientService clientService;
+    @Autowired
+    EventBookingService eventBookingService;
 
-    @PostMapping("/save")
-    private ClientModel saveClient(@RequestBody ClientModel clientModel){
-        return clientService.saveClient(clientModel);
+    @GetMapping("/venue")
+    private List<VenueModel> getVenueList(@RequestParam(name = "venueId",required = false)Long venueId){
+        return clientService.getVenueList(venueId);
     }
-    @DeleteMapping("/delete/{id}")
-    private String deleteClient(@PathVariable(name = "id") Long clientId){
-        return clientService.deleteClient(clientId);
+    @PostMapping("/eventBooking")
+    private String saveBooking(@RequestBody EventBookingModel eventBookingModel){
+        return eventBookingService.saveBooking(eventBookingModel);
     }
-    @GetMapping("/")
-    private List<ClientModel> getClientById(@RequestParam(name = "id",required = false)Long clientId){
-        return clientService.getClient(clientId);
+    @GetMapping("/eventInfo/{contact}")
+    private List<EventBookingModel> getEventsOfClient(@PathVariable(name = "contact")String contact){
+        return eventBookingService.getBookingForClient(contact);
     }
 }

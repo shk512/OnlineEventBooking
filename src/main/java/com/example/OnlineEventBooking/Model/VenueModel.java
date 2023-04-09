@@ -16,15 +16,19 @@ import java.util.Date;
 public class VenueModel {
     private Long id;
     private double perHeadRate;
-    @JsonProperty("personInfo")
+    @JsonProperty("venueInfo")
     private PersonInfoModel personInfoModel;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date packageStartDate;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date packageEndsDate;
     private Boolean isPackageActive;
+    private String username;
+    private String password;
     public VenueModel(Venue venue ){
         this.setId(venue.getId());
+        this.setPassword(venue.getPassword());
+        this.setUsername(venue.getUsername());
         this.setPackageStartDate(venue.getPackageStartDate());
         this.setPerHeadRate(venue.getPerHeadRate());
         this.setPackageEndsDate(venue.getPackageEndsDate());
@@ -35,6 +39,8 @@ public class VenueModel {
         Venue venue=new Venue();
 
         venue.setId(this.id);
+        venue.setPassword(this.password);
+        venue.setUsername(this.username);
         venue.setPerHeadRate(this.perHeadRate);
         venue.setIsPackageActive(this.isPackageActive);
         venue.setPackageStartDate(this.packageStartDate);

@@ -24,6 +24,10 @@ public class Venue {
     private PersonInfo personInfo;
     @Column(name = "per_head_rate")
     private double perHeadRate;
+    @Column(name = "username")
+    private String username;
+    @Column(name = "password")
+    private String password;
     @Column(name = "package_start_date")
     private Date packageStartDate;
     @Column(name = "package_ends_date")
