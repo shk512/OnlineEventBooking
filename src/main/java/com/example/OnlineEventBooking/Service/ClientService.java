@@ -28,6 +28,7 @@ public class ClientService {
         ClientModel responseModel;
         Client client=searchClient(clientModel.getPersonInfoModel().getContact());
         if(client!=null){
+            clientModel.setId(client.getId());
             responseModel=new ClientModel(clientRepository.save(clientModel.dissamble()));
         }
         else {

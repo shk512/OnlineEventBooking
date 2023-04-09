@@ -12,12 +12,12 @@ import java.util.List;
 public class PaymentController {
     @Autowired
     PaymentService paymentService;
-    @PostMapping("/save")
+    @PostMapping("/transaction")
     private PaymentModel savePayment(@RequestBody PaymentModel paymentModel){
         return paymentService.savePayment(paymentModel);
     }
-    @GetMapping("/")
-    private List<PaymentModel> getPayment(@RequestParam(name = "id",required = false) Long id){
+    @GetMapping("/{id}")
+    private List<PaymentModel> getPayment(@PathVariable(name = "id",required = false) Long id){
         return paymentService.getPayments(id);
     }
 }

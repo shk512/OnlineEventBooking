@@ -17,11 +17,11 @@ public class EventBookingController {
     private String saveBooking(@RequestBody EventBookingModel bookingModel){
         return bookingService.saveBooking(bookingModel);
     }
-    @GetMapping("/")
-    private List<EventBookingModel> getBookings(@RequestParam(name = "venueId",required = false)Long venueId,@RequestParam(name = "bookingId",required = false) Long bookingId){
+    @GetMapping("/{venueId}/")
+    private List<EventBookingModel> getBookings(@PathVariable(name = "venueId",required = false)Long venueId,@RequestParam(name = "bookingId",required = false) Long bookingId){
         return bookingService.getBookingForVenue(venueId,bookingId);
     }
-    @DeleteMapping("/delete{id}")
+    @DeleteMapping("/delete/{id}")
     private String deleteBooking(@PathVariable(name = "id")Long id){
         return bookingService.deleteBooking(id);
     }

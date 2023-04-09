@@ -22,7 +22,11 @@ public class ClientController {
     }
     @PostMapping("/eventBooking")
     private String saveBooking(@RequestBody EventBookingModel eventBookingModel){
-        return eventBookingService.saveBooking(eventBookingModel);
+        try{
+            return eventBookingService.saveBooking(eventBookingModel);
+        }catch (Exception e){
+            return e.toString();
+        }
     }
     @GetMapping("/eventInfo/{contact}")
     private List<EventBookingModel> getEventsOfClient(@PathVariable(name = "contact")String contact){

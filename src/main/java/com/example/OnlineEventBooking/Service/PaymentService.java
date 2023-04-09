@@ -5,6 +5,7 @@ import com.example.OnlineEventBooking.Repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,12 +19,10 @@ public class PaymentService {
         return new PaymentModel(paymentRepository.save(paymentModel.dissamble(eventBookingService.getBookingById(paymentModel.getEventBookingModel().getId()))));
     }
     public List<PaymentModel> getPayments(Long bookingId){
-        List<PaymentModel> paymentList;
-        if(bookingId!=null){
-            paymentList=paymentRepository.findPaymentByEventBooking_Id(bookingId).stream().map(PaymentModel::new).collect(Collectors.toList());
+        if(eventBookingService.getBookingById(bookingId)!=null){
+            return paymentRepository.findAll().stream().map(PaymentModel::new).collect(Collectors.toList());
         }else{
-            paymentList=paymentRepository.findAll().stream().map(PaymentModel::new).collect(Collectors.toList());
+            return new ArrayList<>();
         }
-        return paymentList;
     }
 }

@@ -3,13 +3,11 @@ package com.example.OnlineEventBooking.Service;
 import com.example.OnlineEventBooking.Entity.Client;
 import com.example.OnlineEventBooking.Entity.EventBooking;
 import com.example.OnlineEventBooking.Entity.Venue;
-import com.example.OnlineEventBooking.Model.ClientModel;
 import com.example.OnlineEventBooking.Model.EventBookingModel;
 import com.example.OnlineEventBooking.Repository.EventBookingRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,33 +36,52 @@ public class EventBookingService{
             }
 
         }else{
+
             if(venue.getIsPackageActive()){
-                if(searchBooking(venue.getId(),bookingModel.getDate(),bookingModel.getTime())){
+                if(!searchBooking(venue.getId(),bookingModel.getDate(),bookingModel.getTime())){
                     EventBooking eventBooking=bookingRepository.save(bookingModel.dissamble(client,venue));
-                    response="Booking Saved successfully with boooking Id:"+eventBooking.getId();
+                    if(eventBooking.getIsBookingConfirm()){
+                        response="Booking confirmed successfully with boooking Id:"+eventBooking.getId();
+                    }else {
+                        response="Booking reserved successfully with boooking Id:"+eventBooking.getId();
+                    }
+
                 }else {
-                    if(bookingModel.getTime().equalsIgnoreCase("morning")){
-                        if(searchBooking(venue.getId(),bookingModel.getDate(),"evening")){
-                            response="Oops! Morning time reserved but Evening time available.";
-                        }else{
-                            response="Oops! Try another date.";
-                        }
+                    EventBooking getEvent =bookingRepository.findEventBookingByDateAndTimeAndVenue_Id(bookingModel.getDate(),bookingModel.getTime(),venue.getId());
+                    if(!getEvent.getIsBookingConfirm()){
+                        bookingModel.setId(getEvent.getId());
+                        EventBooking eventBooking=bookingRepository.save(bookingModel.dissamble(client,venue));
+                        response="Booking confirmed successfully with boooking Id:"+eventBooking.getId();
                     }else{
-                        response="Oops! Already reserved. Try another date.";
+                        if(bookingModel.getTime().equalsIgnoreCase("morning")){
+                            if(!searchBooking(venue.getId(),bookingModel.getDate(),"evening")){
+                                response="Oops! Morning time reserved but Evening time available.";
+                            }else{
+                                response="Oops! Try another date.";
+                            }
+                        } else if (bookingModel.getTime().equalsIgnoreCase("evening")) {
+                            if(!searchBooking(venue.getId(),bookingModel.getDate(),"morning")){
+                                response="Oops! Evening time is reserved but Morning time is available.";
+                            }else{
+                                response="Oops! Try another date.";
+                            }
+                        } else{
+                            response="Selected time is not available.";
+                        }
                     }
                 }
             }else{
-                response="Couldn't save. Venue is inactive to book events";
+                response="Couldn't save. Venue is inactive to book events right now.";
             }
         }
         return  response;
     }
     private Boolean searchBooking(Long venue, Date date,String time){
         boolean result;
-        if(bookingRepository.findEventBookingByVenue_IdAndDateAndTime(venue,date,time)!=null){
-            result=false;
-        }else{
+        if(bookingRepository.findEventBookingByDateAndTimeAndVenue_Id(date,time,venue)!=null){
             result=true;
+        }else{
+            result=false;
         }
         return  result;
     }
@@ -76,11 +93,8 @@ public class EventBookingService{
         if(venueId!=null&&bookingId==null){
             list=bookingRepository.findEventBookingByVenue_Id(venueId).stream().map(EventBookingModel::new).collect(Collectors.toList());
         }
-        else if(bookingId!=null&&venueId==null){
-           list=bookingRepository.findById(bookingId).stream().map(EventBookingModel::new).collect(Collectors.toList());
-        }
         else {
-            list=null;
+           list=bookingRepository.findEventBookingByIdAndVenue_Id(bookingId,venueId).stream().map(EventBookingModel::new).collect(Collectors.toList());
         }
         return  list;
     }
