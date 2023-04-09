@@ -19,16 +19,18 @@ public class EventBooking {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @OneToMany(mappedBy = "eventBooking")
     private List<Payment> paymentModeList;
-
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
     @ManyToOne
     @JoinColumn (name = "venue_id")
     private Venue venue;
+    @Column(name = "username")
+    private String username;
+    @Column(name = "password")
+    private String password;
     @Column(name = "date")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
