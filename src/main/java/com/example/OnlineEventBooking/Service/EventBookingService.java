@@ -32,7 +32,7 @@ public class EventBookingService{
         if(bookingModel.getId()!=null){
             if(bookingRepository.existsById(bookingModel.getId()))
             {
-                EventBooking eventBooking=bookingRepository.save(bookingModel.dissamble(client,venue));
+                bookingRepository.save(bookingModel.dissamble(client,venue));
                 response="Booking updated successfully";
             }else {
                 response="Record not found against correspond Id";
