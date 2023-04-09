@@ -25,10 +25,8 @@ public class Venue {
     @Column(name = "per_head_rate")
     private double perHeadRate;
     @Column(name = "package_start_date")
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date packageStartDate;
     @Column(name = "package_ends_date")
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date packageEndsDate;
     @Column(name="is_package_active")
     private Boolean isPackageActive;

@@ -15,11 +15,11 @@ public class EventBookingController {
     private EventBookingService bookingService;
     @PostMapping("/save")
     private String saveBooking(@RequestBody EventBookingModel bookingModel){
-        return bookingService.saveBooking(bookingModel)!=null?"HURRAH! Congrats, Your booking has been reserved.":"Oops! Sorry, Your requested date is already reserved.";
+        return bookingService.saveBooking(bookingModel);
     }
     @GetMapping("/")
-    private List<EventBookingModel> getBookings(@RequestParam(name = "clientId",required = false)Long clientId,@RequestParam(name = "venueId",required = false)Long venueId,@RequestParam(name = "date",required = false) Date date){
-        return bookingService.getBookingByClientId(clientId,venueId,date);
+    private List<EventBookingModel> getBookings(@RequestParam(name = "clientId",required = false)Long clientId,@RequestParam(name = "venueId",required = false)Long venueId,@RequestParam(name = "bookingId",required = false) Long bookingId){
+        return bookingService.getBookingByClientId(clientId,venueId,bookingId);
     }
     @DeleteMapping("/delete{id}")
     private String deleteBooking(@PathVariable(name = "id")Long id){

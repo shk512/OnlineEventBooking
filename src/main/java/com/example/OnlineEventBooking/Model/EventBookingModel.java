@@ -1,6 +1,8 @@
 package com.example.OnlineEventBooking.Model;
 
 import com.example.OnlineEventBooking.Entity.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class EventBookingModel {
     private Long id;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
     private String time;
     private int persons;
@@ -19,9 +22,10 @@ public class EventBookingModel {
     private double balanceAmount;
     private String menu;
     private String extraDetails;
-    private String paymentMode;
     private Boolean isBookingConfirm;
+    @JsonProperty("client")
     private ClientModel clientId;
+    @JsonProperty("venue")
     private VenueModel venueId;
 
     public EventBookingModel(EventBooking eventBooking){
@@ -30,7 +34,6 @@ public class EventBookingModel {
         this.setTime(eventBooking.getTime());
         this.setPersons(eventBooking.getPersons());
         this.setMenu(eventBooking.getMenu());
-        this.setPaymentMode(eventBooking.getPaymentMode());
         this.setTotalAmount(eventBooking.getTotalAmount());
         this.setAdvanceAmount(eventBooking.getAdvanceAmount());
         this.setBalanceAmount(eventBooking.getBalanceAmount());
@@ -46,7 +49,6 @@ public class EventBookingModel {
         eventBooking.setDate(this.date);
         eventBooking.setIsBookingConfirm(this.isBookingConfirm);
         eventBooking.setMenu(this.menu);
-        eventBooking.setPaymentMode(this.paymentMode);
         eventBooking.setAdvanceAmount(this.advanceAmount);
         eventBooking.setTime(this.time);
         eventBooking.setPersons(this.persons);

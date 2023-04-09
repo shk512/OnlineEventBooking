@@ -2,6 +2,7 @@ package com.example.OnlineEventBooking.Model;
 
 import com.example.OnlineEventBooking.Entity.EventBooking;
 import com.example.OnlineEventBooking.Entity.EventExecution;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class EventExecutionModel {
     private Long id;
+    @JsonProperty("eventBooking")
     private EventBookingModel bookingId;
     private int attendee;
     private double totalAmount;

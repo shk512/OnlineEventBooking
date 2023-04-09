@@ -14,7 +14,7 @@ public class VenueController {
     @Autowired
     VenueService venueService;
 
-    @PostMapping("/signup")
+    @PostMapping("/register")
     private VenueModel saveVenue(@RequestBody VenueModel venueModel){
         return venueService.saveVenue(venueModel);
     }

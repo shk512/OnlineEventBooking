@@ -19,7 +19,7 @@ tags:
     description: Endpoints for Payment
 
 paths:
-  /venue/signup:
+  /venue/register:
     post:
       tags:
         - Venue

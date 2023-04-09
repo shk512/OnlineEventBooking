@@ -3,6 +3,8 @@ package com.example.OnlineEventBooking.Model;
 import com.example.OnlineEventBooking.Entity.EventBooking;
 import com.example.OnlineEventBooking.Entity.Payment;
 import com.example.OnlineEventBooking.Service.EventBookingService;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class PaymentModel {
     private Long transactionId;
+    @JsonProperty("eventBooking")
     private EventBookingModel eventBookingModel;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
     private String paymentMode;
     private double amountReceived;
