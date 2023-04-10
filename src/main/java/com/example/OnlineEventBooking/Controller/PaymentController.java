@@ -17,7 +17,7 @@ public class PaymentController {
         return paymentService.savePayment(paymentModel);
     }
     @GetMapping("/{id}")
-    private List<PaymentModel> getPayment(@PathVariable(name = "id",required = false) Long id){
+    private List<PaymentModel> getPayment(@PathVariable(name = "id") Long id){
         return paymentService.getPayments(id);
     }
 }

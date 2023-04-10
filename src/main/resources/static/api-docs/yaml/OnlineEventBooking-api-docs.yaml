@@ -81,34 +81,34 @@ paths:
             text/plain:
               schema:
                 type: string
-  /client/save:
+  /client/eventBooking:
     post:
       tags:
         - Client
-      summary: Endpoints to save user
-      operationId: user save
+      summary: Endpoint to save an event
+      operationId: saveEvent
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ClientModel'
+              $ref: '#/components/schemas/EventBookingModel'
       responses:
         '200':
-          description: Successful user record has been saved or updated
+          description: Successfully save the event
           content:
-            application/json:
+            text/plain:
               schema:
-                $ref: '#/components/schemas/ClientModel'
-  /client/:
+                type: string
+  /client/venue:
     get:
       tags:
         - Client
-      summary: Get list of all or specific single Client
-      operationId: ClientList
+      summary: Get list of all venue
+      operationId: allVenue
       parameters:
         - in: query
-          name: id
-          description: Unique reference of Client record
+          name: venueId
+          description: Unique reference of Venue record
           required: false
           schema:
             type: integer
@@ -121,28 +121,29 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ClientModel'
-  /client/delete/{id}:
-    delete:
+                  $ref: '#/components/schemas/VenueModel'
+  /client/eventInfo/{contact}:
+    get:
       tags:
         - Client
-      summary: Delete the Client by id
-      operationId: deleteClient
+      summary: List of events information for specific client
+      operationId: eventInfo
       parameters:
         - in: path
-          name: id
-          description: Delete venue by id
+          name: contact
+          description: contact of client (0300-123567)
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
-          description: Successful deleted
+          description: Successful retrieval
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
+                type: array
+                items:
+                  $ref: '#components/schemas/EventBookingModel'
   /booking/save:
     post:
       tags:
@@ -156,12 +157,12 @@ paths:
               $ref: '#/components/schemas/EventBookingModel'
       responses:
         '200':
-          description: Successful country record has been saved or updated
+          description: Successful event has been saved or updated
           content:
             text/plain:
               schema:
                 type: string
-  /booking/:
+  /booking/{venueId}:
     get:
       tags:
         - EventBooking
@@ -169,26 +170,19 @@ paths:
       operationId: BookingList
       parameters:
         - in: query
-          name: clientId
+          name: bookingId
           description: Unique reference of Booking record for client
           required: false
           schema:
             type: integer
             format: int64
-        - in: query
+        - in: path
           name: venueId
           description: Unique reference of Booking record for Venue
-          required: false
+          required: true
           schema:
             type: integer
             format: int64
-        - in: query
-          name: date
-          description: Unique reference of Booking record by date
-          required: false
-          schema:
-            type: string
-            format: date
       responses:
         '200':
           description: Successful retrieval
@@ -219,7 +213,7 @@ paths:
             text/plain:
               schema:
                 type: string
-  /execution/save:
+  /execution/event:
     post:
       tags:
         - EventExecution
@@ -238,7 +232,7 @@ paths:
               schema:
                 type: string
 
-  /execution/event/{venueId}:
+  /execution/history/{venueId}:
     get:
       tags:
         - EventExecution
@@ -268,7 +262,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/EventExecutionModel'
-  /payment/save:
+  /payment/transaction:
     post:
       tags:
         - Payment
@@ -286,17 +280,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaymentModel'
-  /payment/:
+  /payment/{bookingId}:
     get:
       tags:
         - Payment
-      summary: Get list of all Payments or specific payment record
+      summary: Get list of all transactions record for specific booking
       operationId: paymentList
       parameters:
-        - in: query
-          name: id
-          description: Unique reference of Payment record
-          required: false
+        - in: path
+          name: bookingId
+          description: Unique reference of booking record
+          required: true
           schema:
             type: integer
             format: int64
@@ -344,11 +338,11 @@ components:
           type: string
         isBookingConfirm:
           type: boolean
-        clientId:
+        client:
           type: object
           allOf:
             - $ref: '#/components/schemas/ClientModel'
-        venueId:
+        venue:
           type: object
           allOf:
             - $ref: '#/components/schemas/VenueModel'
@@ -359,7 +353,7 @@ components:
         id:
           type: integer
           format: int64
-        PersonInfoModel:
+        personInfo:
           type: object
           allOf:
             - $ref: '#/components/schemas/PersonInfoModel'
@@ -380,7 +374,7 @@ components:
           format: date
         isPackageActive:
           type: boolean
-        PersonInfoModel:
+        venuInfo:
           type: object
           allOf:
             - $ref: '#/components/schemas/PersonInfoModel'
@@ -415,7 +409,7 @@ components:
         concessionAmount:
           type: number
           format: double
-        bookingId:
+        eventBooking:
           type: object
           allOf:
             - $ref: '#/components/schemas/EventBookingModel'
@@ -434,7 +428,445 @@ components:
         amountReceived:
           type: number
           format: double
-        eventBookingModel:
+        eventBooking:
           type: object
           allOf:
             - $ref: '#/components/schemas/EventBookingModel'
+
+
+            openapi: 3.0.0
+            info:
+              title: Online Event Booking API
+              description: Rest API for Online Event Booking App
+              version: 1.0.0
+              contact:
+                email: mukarramshk512@gmail.com
+
+            tags:
+              - name: Venue
+                description: Endpoints for Venue
+              - name: Client
+                description: Endpoints for Client
+              - name: EventBooking
+                description: Endpoints for Event Booking
+              - name: EventExecution
+                description: Endpoints for Event Execution
+              - name: Payment
+                description: Endpoints for Payment
+
+            paths:
+              /venue/register:
+                post:
+                  tags:
+                    - Venue
+                  summary: Endpoints to Register Venue
+                  operationId: venueRegistration
+                  requestBody:
+                    content:
+                      application/json:
+                        schema:
+                          $ref: '#/components/schemas/VenueModel'
+                  responses:
+                    '200':
+                      description: Successful venue record has been saved or updated
+                      content:
+                        application/json:
+                          schema:
+                            $ref: '#/components/schemas/VenueModel'
+              /venue/:
+                get:
+                  tags:
+                    - Venue
+                  summary: Get list of all or specific single Venue
+                  operationId: venueList
+                  parameters:
+                    - in: query
+                      name: id
+                      description: Unique reference of venue record
+                      required: false
+                      schema:
+                        type: integer
+                        format: int64
+                  responses:
+                    '200':
+                      description: Successful retrieval
+                      content:
+                        application/json:
+                          schema:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/VenueModel'
+              /venue/delete/{id}:
+                delete:
+                  tags:
+                    - Venue
+                  summary: Delete the venue by id
+                  operationId: deleteVenue
+                  parameters:
+                    - in: path
+                      name: id
+                      description: Delete venue by id
+                      required: true
+                      schema:
+                        type: integer
+                        format: int64
+                  responses:
+                    '200':
+                      description: Successful deleted
+                      content:
+                        text/plain:
+                          schema:
+                            type: string
+              /client/eventBooking:
+                post:
+                  tags:
+                    - Client
+                  summary: Endpoint to save an event
+                  operationId: saveEvent
+                  requestBody:
+                    content:
+                      application/json:
+                        schema:
+                          $ref: '#/components/schemas/EventBookingModel'
+                  responses:
+                    '200':
+                      description: Successfully save the event
+                      content:
+                        text/plain:
+                          schema:
+                            type: string
+              /client/venue:
+                get:
+                  tags:
+                    - Client
+                  summary: Get list of all venue
+                  operationId: allVenue
+                  parameters:
+                    - in: query
+                      name: venueId
+                      description: Unique reference of Venue record
+                      required: false
+                      schema:
+                        type: integer
+                        format: int64
+                  responses:
+                    '200':
+                      description: Successful retrieval
+                      content:
+                        application/json:
+                          schema:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/VenueModel'
+              /client/eventInfo/{contact}:
+                get:
+                  tags:
+                    - Client
+                  summary: List of events information for specific client
+                  operationId: eventInfo
+                  parameters:
+                    - in: path
+                      name: contact
+                      description: contact of client (0300-123567)
+                      required: true
+                      schema:
+                        type: string
+                  responses:
+                    '200':
+                      description: Successful retrieval
+                      content:
+                        application/json:
+                          schema:
+                            type: array
+                            items:
+                              $ref: '#components/schemas/EventBookingModel'
+              /booking/save:
+                post:
+                  tags:
+                    - EventBooking
+                  summary: Endpoints to save booking
+                  operationId: bookingSave
+                  requestBody:
+                    content:
+                      application/json:
+                        schema:
+                          $ref: '#/components/schemas/EventBookingModel'
+                  responses:
+                    '200':
+                      description: Successful event has been saved or updated
+                      content:
+                        text/plain:
+                          schema:
+                            type: string
+              /booking/{venueId}:
+                get:
+                  tags:
+                    - EventBooking
+                  summary: Get list of all Bookings By Specific VenueIdAndDate or ClientIdAndDate
+                  operationId: BookingList
+                  parameters:
+                    - in: query
+                      name: bookingId
+                      description: Unique reference of Booking record for client
+                      required: false
+                      schema:
+                        type: integer
+                        format: int64
+                    - in: path
+                      name: venueId
+                      description: Unique reference of Booking record for Venue
+                      required: true
+                      schema:
+                        type: integer
+                        format: int64
+                  responses:
+                    '200':
+                      description: Successful retrieval
+                      content:
+                        application/json:
+                          schema:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/EventBookingModel'
+              /booking/delete/{id}:
+                delete:
+                  tags:
+                    - EventBooking
+                  summary: Delete the Booking by id
+                  operationId: deleteBooking
+                  parameters:
+                    - in: path
+                      name: id
+                      description: Delete venue by id
+                      required: true
+                      schema:
+                        type: integer
+                        format: int64
+                  responses:
+                    '200':
+                      description: Successful deleted
+                      content:
+                        text/plain:
+                          schema:
+                            type: string
+              /execution/event:
+                post:
+                  tags:
+                    - EventExecution
+                  summary: Endpoints to execute booking
+                  operationId: bookingExecute
+                  requestBody:
+                    content:
+                      application/json:
+                        schema:
+                          $ref: '#/components/schemas/EventExecutionModel'
+                  responses:
+                    '200':
+                      description: Successful country record has been saved or updated
+                      content:
+                        text/plain:
+                          schema:
+                            type: string
+
+              /execution/history/{venueId}:
+                get:
+                  tags:
+                    - EventExecution
+                  summary: Get the List of executed event details for specific venue or for specific event
+                  operationId: ExecutedEvent
+                  parameters:
+                    - in: path
+                      name: venueId
+                      description: Unique reference of Venue
+                      required: true
+                      schema:
+                        type: integer
+                        format: int64
+                    - in: query
+                      name: eventId
+                      description: Unique reference of Booking record
+                      required: false
+                      schema:
+                        type: integer
+                        format: int64
+                  responses:
+                    '200':
+                      description: Successful retrieval
+                      content:
+                        application/json:
+                          schema:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/EventExecutionModel'
+              /payment/transaction:
+                post:
+                  tags:
+                    - Payment
+                  summary: Endpoints to payment against booking
+                  operationId: savePayment
+                  requestBody:
+                    content:
+                      application/json:
+                        schema:
+                          $ref: '#/components/schemas/PaymentModel'
+                  responses:
+                    '200':
+                      description: Successful country record has been saved or updated
+                      content:
+                        application/json:
+                          schema:
+                            $ref: '#/components/schemas/PaymentModel'
+              /payment/{bookingId}:
+                get:
+                  tags:
+                    - Payment
+                  summary: Get list of all transactions record for specific booking
+                  operationId: paymentList
+                  parameters:
+                    - in: path
+                      name: bookingId
+                      description: Unique reference of booking record
+                      required: true
+                      schema:
+                        type: integer
+                        format: int64
+                  responses:
+                    '200':
+                      description: Successful retrieval
+                      content:
+                        application/json:
+                          schema:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/PaymentModel'
+
+            components:
+
+              schemas:
+                EventBookingModel:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                    date:
+                      type: string
+                      format: date
+                    time:
+                      type: string
+                    persons:
+                      type: integer
+                      format: int32
+                    totalAmount:
+                      type: number
+                      format: double
+                    balanceAmount:
+                      type: number
+                      format: double
+                    advanceAmount:
+                      type: number
+                      format: double
+                    menu:
+                      type: string
+                    extraDetails:
+                      type: string
+                    paymentMode:
+                      type: string
+                    isBookingConfirm:
+                      type: boolean
+                    client:
+                      type: object
+                      allOf:
+                        - $ref: '#/components/schemas/ClientModel'
+                    venue:
+                      type: object
+                      allOf:
+                        - $ref: '#/components/schemas/VenueModel'
+
+                ClientModel:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                    personInfo:
+                      type: object
+                      allOf:
+                        - $ref: '#/components/schemas/PersonInfoModel'
+
+                VenueModel:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                    password:
+                      type: string
+                    packageStartDate:
+                      type: string
+                      format: date
+                    packageEndsDate:
+                      type: string
+                      format: date
+                    isPackageActive:
+                      type: boolean
+                    venuInfo:
+                      type: object
+                      allOf:
+                        - $ref: '#/components/schemas/PersonInfoModel'
+
+                PersonInfoModel:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    contact:
+                      type: string
+                    city:
+                      type: string
+                    streetAddress:
+                      type: string
+
+                EventExecutionModel:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                    attendee:
+                      type: integer
+                      format: int32
+                    totalAmount:
+                      type: number
+                      format: double
+                    balanceAmount:
+                      type: number
+                      format: double
+                    concessionAmount:
+                      type: number
+                      format: double
+                    eventBooking:
+                      type: object
+                      allOf:
+                        - $ref: '#/components/schemas/EventBookingModel'
+
+                PaymentModel:
+                  type: object
+                  properties:
+                    transactionId:
+                      type: integer
+                      format: int64
+                    date:
+                      type: string
+                      format: date
+                    paymentMode:
+                      type: string
+                    amountReceived:
+                      type: number
+                      format: double
+                    eventBooking:
+                      type: object
+                      allOf:
+                        - $ref: '#/components/schemas/EventBookingModel'
+
+

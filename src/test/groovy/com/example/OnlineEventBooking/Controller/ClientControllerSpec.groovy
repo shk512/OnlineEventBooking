@@ -15,16 +15,4 @@ class ClientControllerSpec extends Specification{
     def testClientController=new ClientController(clientService: mockClientService)
     def mockMvc= MockMvcBuilders.standaloneSetup(testClientController).build()
 
-    def "Post/ check the user successfully save"(){
-        given:
-        def clientModel=new ClientModel(personInfoModel: new PersonInfoModel(name: "Mukaram",contact: "0300-1234567",streetAddress: "Satellite Town",city: "Gujranwala"))
-        def clientModelJson = new ObjectMapper().writeValueAsString(clientModel)
-        mockClientService.saveClient(clientModel)>>new ClientModel(id: 1L, personInfoModel: new PersonInfoModel(name: "Mukaram",contact: "0300-1234567",streetAddress: "Satellite Town",city: "Gujranwala"))
-
-        when:
-        def response= mockMvc.perform(post("/client/save").contentType(MediaType.APPLICATION_JSON_VALUE).content(clientModelJson))
-
-        then:
-        response.andExpect (status().isOk())
-    }
 }

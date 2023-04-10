@@ -17,8 +17,8 @@ public class EventBookingController {
     private String saveBooking(@RequestBody EventBookingModel bookingModel){
         return bookingService.saveBooking(bookingModel);
     }
-    @GetMapping("/{venueId}/")
-    private List<EventBookingModel> getBookings(@PathVariable(name = "venueId",required = false)Long venueId,@RequestParam(name = "bookingId",required = false) Long bookingId){
+    @GetMapping("/{venueId}")
+    private List<EventBookingModel> getBookings(@PathVariable(name = "venueId")Long venueId,@RequestParam(name = "bookingId",required = false) Long bookingId){
         return bookingService.getBookingForVenue(venueId,bookingId);
     }
     @DeleteMapping("/delete/{id}")

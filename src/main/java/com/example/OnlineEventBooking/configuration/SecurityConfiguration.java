@@ -8,16 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration implements WebSecurityConfigurer {
+public class SecurityConfiguration {
 
 
-    @Override
-    public void init(SecurityBuilder builder) throws Exception {
-
-    }
-
-    @Override
-    public void configure(SecurityBuilder builder) throws Exception {
-
-    }
 }
