@@ -8,6 +8,10 @@ import com.example.OnlineEventBooking.Repository.EventBookingRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,57 +26,59 @@ public class EventBookingService{
     private ClientService clientService;
     @Autowired
     private VenueService venueService;
-    public String saveBooking(EventBookingModel bookingModel){
+    public String saveBooking(EventBookingModel bookingModel) throws ParseException {
+        Date date = new Date();
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate= dateFormat.format(date);
+        Date checkDate=dateFormat.parse(formattedDate);
         String response;
-        Client client=clientService.saveClient(bookingModel.getClientId()).dissamble();
-        Venue venue=venueService.getVenueEntity(bookingModel.getVenueId().getId());
-        if(bookingModel.getId()!=null){
-            if(bookingRepository.existsById(bookingModel.getId()))
-            {
-                bookingRepository.save(bookingModel.dissamble(client,venue));
-                response="Booking updated successfully";
-            }else {
-                response="Record not found against correspond Id";
-            }
-
-        }else{
-
-            if(venue.getIsPackageActive()){
-                if(!searchBooking(venue.getId(),bookingModel.getDate(),bookingModel.getTime())){
-                    EventBooking eventBooking=bookingRepository.save(bookingModel.dissamble(client,venue));
-                    if(eventBooking.getIsBookingConfirm()){
-                        response="Booking confirmed successfully with boooking Id:"+eventBooking.getId();
-                    }else {
-                        response="Booking reserved successfully with boooking Id:"+eventBooking.getId();
-                    }
-
+        if(bookingModel.getDate().after(checkDate)){
+            Client client=clientService.saveClient(bookingModel.getClientId()).dissamble();
+            Venue venue=venueService.getVenueEntity(bookingModel.getVenueId().getId());
+            if(bookingModel.getId()!=null){
+                if(bookingRepository.existsById(bookingModel.getId()))
+                {
+                    bookingRepository.save(bookingModel.dissamble(client,venue));
+                    response="Booking updated successfully";
                 }else {
-                    EventBooking getEvent =bookingRepository.findEventBookingByDateAndTimeAndVenue_Id(bookingModel.getDate(),bookingModel.getTime(),venue.getId());
-                    if(!getEvent.getIsBookingConfirm()){
-                        bookingModel.setId(getEvent.getId());
+                    response="Record not found against correspond Id";
+                }
+
+            }else{
+                if(venue.getIsPackageActive()){
+                    if(!searchBooking(venue.getId(),bookingModel.getDate(),bookingModel.getTime())){
                         EventBooking eventBooking=bookingRepository.save(bookingModel.dissamble(client,venue));
-                        response="Booking confirmed successfully with boooking Id:"+eventBooking.getId();
-                    }else{
-                        if(bookingModel.getTime().equalsIgnoreCase("morning")){
-                            if(!searchBooking(venue.getId(),bookingModel.getDate(),"evening")){
-                                response="Oops! Morning time reserved but Evening time available.";
-                            }else{
-                                response="Oops! Try another date.";
+                        response="Booking reserved successfully with boooking Id:"+eventBooking.getId();
+                    }else {
+                        EventBooking getEvent =bookingRepository.findEventBookingByDateAndTimeAndVenue_Id(bookingModel.getDate(),bookingModel.getTime(),venue.getId());
+                        if(!getEvent.getIsBookingConfirm()){
+                            bookingModel.setId(getEvent.getId());
+                            EventBooking eventBooking=bookingRepository.save(bookingModel.dissamble(client,venue));
+                            response="Booking reserved successfully with boooking Id:"+eventBooking.getId();
+                        }else{
+                            if(bookingModel.getTime().equalsIgnoreCase("morning")){
+                                if(!searchBooking(venue.getId(),bookingModel.getDate(),"evening")){
+                                    response="Oops! Morning time reserved but Evening time available.";
+                                }else{
+                                    response="Oops! Try another date.";
+                                }
+                            } else if (bookingModel.getTime().equalsIgnoreCase("evening")) {
+                                if(!searchBooking(venue.getId(),bookingModel.getDate(),"morning")){
+                                    response="Oops! Evening time is reserved but Morning time is available.";
+                                }else{
+                                    response="Oops! Try another date.";
+                                }
+                            } else{
+                                response="Selected time is not available.";
                             }
-                        } else if (bookingModel.getTime().equalsIgnoreCase("evening")) {
-                            if(!searchBooking(venue.getId(),bookingModel.getDate(),"morning")){
-                                response="Oops! Evening time is reserved but Morning time is available.";
-                            }else{
-                                response="Oops! Try another date.";
-                            }
-                        } else{
-                            response="Selected time is not available.";
                         }
                     }
+                }else{
+                    response="Couldn't save. Venue is inactive to book events right now.";
                 }
-            }else{
-                response="Couldn't save. Venue is inactive to book events right now.";
             }
+        }else{
+            response="Invalid date";
         }
         return  response;
     }

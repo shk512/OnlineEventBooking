@@ -5,6 +5,7 @@ import com.example.OnlineEventBooking.Service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -13,7 +14,7 @@ public class PaymentController {
     @Autowired
     PaymentService paymentService;
     @PostMapping("/transaction")
-    private PaymentModel savePayment(@RequestBody PaymentModel paymentModel){
+    private PaymentModel savePayment(@RequestBody PaymentModel paymentModel) throws ParseException {
         return paymentService.savePayment(paymentModel);
     }
     @GetMapping("/{id}")

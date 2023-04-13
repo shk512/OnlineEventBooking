@@ -5,6 +5,7 @@ import com.example.OnlineEventBooking.Service.EventBookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +15,9 @@ public class EventBookingController {
     @Autowired
     private EventBookingService bookingService;
     @PostMapping("/save")
-    private String saveBooking(@RequestBody EventBookingModel bookingModel){
+    private String saveBooking(@RequestBody EventBookingModel bookingModel) throws ParseException {
+        Date date=new Date();
+        System.out.println(date);
         return bookingService.saveBooking(bookingModel);
     }
     @GetMapping("/{venueId}")

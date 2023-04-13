@@ -47,7 +47,7 @@ public class EventBookingModel {
         EventBooking eventBooking=new EventBooking();
         eventBooking.setId(this.id);
         eventBooking.setDate(this.date);
-        eventBooking.setIsBookingConfirm(this.isBookingConfirm);
+        eventBooking.setIsBookingConfirm(this.id!=null?this.isBookingConfirm:false);
         eventBooking.setMenu(this.menu);
         eventBooking.setAdvanceAmount(this.advanceAmount);
         eventBooking.setTime(this.time);
