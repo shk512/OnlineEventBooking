@@ -23,6 +23,7 @@ public class EventBookingModel {
     private String menu;
     private String extraDetails;
     private Boolean isBookingConfirm;
+    private Boolean isExecuted;
     @JsonProperty("client")
     private ClientModel clientId;
     @JsonProperty("venue")
@@ -41,6 +42,7 @@ public class EventBookingModel {
         this.setClientId(new ClientModel(eventBooking.getClient()));
         this.setVenueId(new VenueModel(eventBooking.getVenue()));
         this.setIsBookingConfirm(eventBooking.getIsBookingConfirm());
+        this.setIsExecuted(eventBooking.getIsExecuted());
     }
 
     public EventBooking dissamble(Client client,Venue venue){
@@ -48,6 +50,7 @@ public class EventBookingModel {
         eventBooking.setId(this.id);
         eventBooking.setDate(this.date);
         eventBooking.setIsBookingConfirm(this.id!=null?this.isBookingConfirm:false);
+        eventBooking.setIsExecuted(false);
         eventBooking.setMenu(this.menu);
         eventBooking.setAdvanceAmount(this.advanceAmount);
         eventBooking.setTime(this.time);

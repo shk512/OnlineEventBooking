@@ -45,4 +45,6 @@ public class EventBooking {
     private String extraDetails;
     @Column(name = "is_booking_confirm")
     private Boolean isBookingConfirm;
+    @Column(name = "is_executed")
+    private Boolean isExecuted;
 }

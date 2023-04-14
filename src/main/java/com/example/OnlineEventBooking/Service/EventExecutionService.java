@@ -17,12 +17,17 @@ public class EventExecutionService {
     EventExecutionRepository eventExecutionRepository;
     @Autowired
     EventBookingService eventBookingService;
+    @Autowired
+    EventBookingRepository eventBookingRepository;
     public String executeEvent(EventExecutionModel eventExecutionModel){
         String response;
         if(eventExecutionRepository.findEventExecutionByEventBooking_Id(eventExecutionModel.getBookingId().getId())!=null){
             response="Oops! Already Executed";
         }else{
-            eventExecutionRepository.save(eventExecutionModel.dissamble(eventBookingService.getBookingById(eventExecutionModel.getBookingId().getId())));
+            EventBooking eventBooking=eventBookingService.getBookingById(eventExecutionModel.getBookingId().getId());
+            eventExecutionRepository.save(eventExecutionModel.dissamble(eventBooking));
+            eventBooking.setIsExecuted(true);
+            eventBookingRepository.save(eventBooking);
             response="Successfully Executed. See you again!";
         }
         return response;
