@@ -14,7 +14,12 @@ public class EventExecutionController {
     EventExecutionService eventExecutionService;
     @PostMapping("/event")
     private String executeEvent(@RequestBody EventExecutionModel eventExecutionModel){
-        return eventExecutionService.executeEvent(eventExecutionModel);
+        try{
+            return eventExecutionService.executeEvent(eventExecutionModel);
+        }
+        catch (Exception e){
+            return e.getMessage();
+        }
     }
     @GetMapping("/history/{venueId}")
     private List<EventExecutionModel> getEvents(@PathVariable(name = "venueId")String venueId,@RequestParam(name = "eventId",required = false)Long eventId){
